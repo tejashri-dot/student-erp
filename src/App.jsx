@@ -1,33 +1,41 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+
 import PublicLayout from "./PublicLayout";
 import Layout from "./Layout";
-import Home from "./pages/Home/Home";
 
+import Home from "./pages/Home/Home";
 import About from "./pages/About";
 import ChairmanMessage from "./pages/ChairmanMessage";
 import PrincipalMessage from "./pages/PrincipalMessage";
 import VisionMission from "./pages/VisionMission";
+
 import AcademicProgram from "./pages/AcademicProgram";
 import Curriculum from "./pages/Curriculum";
 import AcademicEvents from "./pages/AcademicEvents";
 import Announcements from "./pages/Announcements";
 import RulesRegulations from "./pages/RulesRegulations";
+
 import AdmissionProcedure from "./pages/AdmissionProcedure";
 import AdmissionForm from "./pages/AdmissionForm";
 import FeeStructure from "./pages/FeeStructure";
+
 import Transport from "./pages/Transport";
 import Library from "./pages/Library";
 import Sports from "./pages/Sports";
+
 import News from "./pages/News";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
+
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import StudentList from "./StudentList";
 import StaffList from "./StaffList";
+import FeePayment from "./pages/FeePayment";
+import OnlineRegistration from "./pages/OnlineRegistration";
+
 
 function App() {
   const { user } = useAuth();
@@ -38,7 +46,7 @@ function App() {
 
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* PUBLIC */}
       <Route
         path="/"
         element={
@@ -79,6 +87,7 @@ function App() {
           </PublicRoute>
         }
       />
+
       <Route
         path="/academic/program"
         element={
@@ -119,6 +128,7 @@ function App() {
           </PublicRoute>
         }
       />
+
       <Route
         path="/admission/procedure"
         element={
@@ -143,6 +153,7 @@ function App() {
           </PublicRoute>
         }
       />
+
       <Route
         path="/facilities/transport"
         element={
@@ -167,6 +178,7 @@ function App() {
           </PublicRoute>
         }
       />
+
       <Route
         path="/news"
         element={
@@ -200,10 +212,26 @@ function App() {
         }
       />
 
-      {/* Auth Route */}
+      {/* AUTH */}
       <Route path="/login" element={<Login />} />
+      <Route
+        path="/fee-payment"
+        element={
+          <PublicRoute>
+            <FeePayment />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/online-registration"
+        element={
+          <PublicRoute>
+            <OnlineRegistration />
+          </PublicRoute>
+        }
+      />
 
-      {/* Admin Routes */}
+      {/* ADMIN */}
       <Route
         path="/dashboard"
         element={
