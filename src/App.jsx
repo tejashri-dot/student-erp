@@ -27,7 +27,7 @@ import Sports from "./pages/Sports";
 import News from "./pages/News";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
+import Contact from "./pages/Contact.jsx";
 
 import Login from "./Login";
 import Dashboard from "./Dashboard";
@@ -35,7 +35,6 @@ import StudentList from "./StudentList";
 import StaffList from "./StaffList";
 import FeePayment from "./pages/FeePayment";
 import OnlineRegistration from "./pages/OnlineRegistration";
-
 
 function App() {
   const { user } = useAuth();
