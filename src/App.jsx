@@ -40,221 +40,42 @@ function App() {
   const { user } = useAuth();
 
   const PublicRoute = ({ children }) => <PublicLayout>{children}</PublicLayout>;
-
   const AdminRoute = ({ children }) => <Layout>{children}</Layout>;
 
   return (
     <Routes>
-      {/* PUBLIC */}
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <Home />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/about"
-        element={
-          <PublicRoute>
-            <About />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/chairman-message"
-        element={
-          <PublicRoute>
-            <ChairmanMessage />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/principal-message"
-        element={
-          <PublicRoute>
-            <PrincipalMessage />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/vision-mission"
-        element={
-          <PublicRoute>
-            <VisionMission />
-          </PublicRoute>
-        }
-      />
+      <Route path="/" element={<PublicRoute><Home /></PublicRoute>} />
+      <Route path="/about" element={<PublicRoute><About /></PublicRoute>} />
+      <Route path="/chairman-message" element={<PublicRoute><ChairmanMessage /></PublicRoute>} />
+      <Route path="/principal-message" element={<PublicRoute><PrincipalMessage /></PublicRoute>} />
+      <Route path="/vision-mission" element={<PublicRoute><VisionMission /></PublicRoute>} />
 
-      <Route
-        path="/academic/program"
-        element={
-          <PublicRoute>
-            <AcademicProgram />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/academic/curriculum"
-        element={
-          <PublicRoute>
-            <Curriculum />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/academic/events"
-        element={
-          <PublicRoute>
-            <AcademicEvents />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/academic/announcements"
-        element={
-          <PublicRoute>
-            <Announcements />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/academic/rules-regulations"
-        element={
-          <PublicRoute>
-            <RulesRegulations />
-          </PublicRoute>
-        }
-      />
+      <Route path="/academic/program" element={<PublicRoute><AcademicProgram /></PublicRoute>} />
+      <Route path="/academic/curriculum" element={<PublicRoute><Curriculum /></PublicRoute>} />
+      <Route path="/academic/events" element={<PublicRoute><AcademicEvents /></PublicRoute>} />
+      <Route path="/academic/announcements" element={<PublicRoute><Announcements /></PublicRoute>} />
+      <Route path="/academic/rules-regulations" element={<PublicRoute><RulesRegulations /></PublicRoute>} />
 
-      <Route
-        path="/admission/procedure"
-        element={
-          <PublicRoute>
-            <AdmissionProcedure />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/admission/form"
-        element={
-          <PublicRoute>
-            <AdmissionForm />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/admission/fee-structure"
-        element={
-          <PublicRoute>
-            <FeeStructure />
-          </PublicRoute>
-        }
-      />
+      <Route path="/admission/procedure" element={<PublicRoute><AdmissionProcedure /></PublicRoute>} />
+      <Route path="/admission/form" element={<PublicRoute><AdmissionForm /></PublicRoute>} />
+      <Route path="/admission/fee-structure" element={<PublicRoute><FeeStructure /></PublicRoute>} />
 
-      <Route
-        path="/facilities/transport"
-        element={
-          <PublicRoute>
-            <Transport />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/facilities/library"
-        element={
-          <PublicRoute>
-            <Library />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/facilities/sports"
-        element={
-          <PublicRoute>
-            <Sports />
-          </PublicRoute>
-        }
-      />
+      <Route path="/facilities/transport" element={<PublicRoute><Transport /></PublicRoute>} />
+      <Route path="/facilities/library" element={<PublicRoute><Library /></PublicRoute>} />
+      <Route path="/facilities/sports" element={<PublicRoute><Sports /></PublicRoute>} />
 
-      <Route
-        path="/news"
-        element={
-          <PublicRoute>
-            <News />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/gallery"
-        element={
-          <PublicRoute>
-            <Gallery />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/blog"
-        element={
-          <PublicRoute>
-            <Blog />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/contact"
-        element={
-          <PublicRoute>
-            <Contact />
-          </PublicRoute>
-        }
-      />
+      <Route path="/news" element={<PublicRoute><News /></PublicRoute>} />
+      <Route path="/gallery" element={<PublicRoute><Gallery /></PublicRoute>} />
+      <Route path="/blog" element={<PublicRoute><Blog /></PublicRoute>} />
+      <Route path="/contact" element={<PublicRoute><Contact /></PublicRoute>} />
 
-      {/* AUTH */}
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/fee-payment"
-        element={
-          <PublicRoute>
-            <FeePayment />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/online-registration"
-        element={
-          <PublicRoute>
-            <OnlineRegistration />
-          </PublicRoute>
-        }
-      />
+      <Route path="/fee-payment" element={<PublicRoute><FeePayment /></PublicRoute>} />
+      <Route path="/online-registration" element={<PublicRoute><OnlineRegistration /></PublicRoute>} />
 
-      {/* ADMIN */}
-      <Route
-        path="/dashboard"
-        element={
-          <AdminRoute>
-            <Dashboard />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="/students"
-        element={
-          <AdminRoute>
-            <StudentList />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="/staff"
-        element={
-          <AdminRoute>
-            <StaffList />
-          </AdminRoute>
-        }
-      />
+      <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+      <Route path="/students" element={<AdminRoute><StudentList /></AdminRoute>} />
+      <Route path="/staff" element={<AdminRoute><StaffList /></AdminRoute>} />
     </Routes>
   );
 }
