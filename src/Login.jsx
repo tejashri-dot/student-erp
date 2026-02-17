@@ -23,7 +23,7 @@ export default function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/login", { username, password });
+      const res = await axios.post("http://localhost:8080/api/login", { username, password });
       onLogin(res.data);
     } catch (error) {
       console.error("Login failed", error);
@@ -156,3 +156,108 @@ export default function Login({ onLogin }) {
     </Container>
   );
 }
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import {
+//   Container,
+//   Paper,
+//   TextField,
+//   Button,
+//   Typography,
+//   Box,
+//   Divider
+// } from "@mui/material";
+// import {
+//   Email as EmailIcon,
+//   Lock as LockIcon
+// } from "@mui/icons-material";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+
+// export default function Login() {
+//   const navigate = useNavigate();
+
+//   const [username, setUsername] = useState("");
+//   const [password, setPassword] = useState("");
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const res = await axios.post(
+//         "http://localhost:8080/api/login",
+//         { username, password }
+//       );
+
+//       // ✅ Save login data
+//       localStorage.setItem("token", res.data.token);
+//       localStorage.setItem("user", JSON.stringify(res.data.user));
+
+//       // ✅ Redirect based on role
+//       if (res.data.user.role === "admin") {
+//         navigate("/dashboard");
+//       } else {
+//         navigate("/");
+//       }
+
+//     } catch (error) {
+//       alert(error.response?.data?.message || "Login failed");
+//     }
+//   };
+
+//   return (
+//     <Container component="main" maxWidth="sm">
+//       <Box sx={{ mt: 8 }}>
+//         <Paper sx={{ p: 4 }}>
+//           <Typography variant="h4" align="center">
+//             Login
+//           </Typography>
+
+//           <Divider sx={{ my: 3 }} />
+
+//           <Box component="form" onSubmit={handleSubmit}>
+//             <TextField
+//               fullWidth
+//               label="Username"
+//               margin="normal"
+//               required
+//               value={username}
+//               onChange={(e) => setUsername(e.target.value)}
+//               InputProps={{
+//                 startAdornment: <EmailIcon sx={{ mr: 1 }} />
+//               }}
+//             />
+
+//             <TextField
+//               fullWidth
+//               label="Password"
+//               type="password"
+//               margin="normal"
+//               required
+//               value={password}
+//               onChange={(e) => setPassword(e.target.value)}
+//               InputProps={{
+//                 startAdornment: <LockIcon sx={{ mr: 1 }} />
+//               }}
+//             />
+
+//             <Button
+//               fullWidth
+//               type="submit"
+//               variant="contained"
+//               sx={{ mt: 3 }}
+//             >
+//               Sign In
+//             </Button>
+//           </Box>
+//         </Paper>
+//       </Box>
+//     </Container>
+//   );
+// }
