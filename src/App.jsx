@@ -296,7 +296,7 @@ import Sports from "./pages/Sports";
 import News from "./pages/News";
 import Gallery from "./pages/Gallery";
 import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
+import Contact from "./pages/Contact.jsx";
 
 /* AUTH & ADMIN */
 import Login from "./Login";
@@ -306,45 +306,57 @@ import StaffList from "./StaffList";
 import FeePayment from "./pages/FeePayment";
 import OnlineRegistration from "./pages/OnlineRegistration";
 
-/* ---------------- ROUTE GUARDS ---------------- */
-
-const PublicRoute = ({ children }) => {
-  return <PublicLayout>{children}</PublicLayout>;
-};
-
-const AdminRoute = ({ children }) => {
-  const { user } = useAuth();
-
-  if (!user) {
-    // Not logged in → go to login
-    return <Navigate to="/login" replace />;
-  }
-
-  return <Layout>{children}</Layout>;
-};
-
-const LoginRoute = ({ children }) => {
-  const { user } = useAuth();
-
-  if (user) {
-    // Already logged in → dashboard
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  return children;
-};
-
-/* ---------------- APP ---------------- */
 
 function App() {
+  const { user } = useAuth();
+
+  const PublicRoute = ({ children }) => <PublicLayout>{children}</PublicLayout>;
+
+  const AdminRoute = ({ children }) => <Layout>{children}</Layout>;
+
   return (
     <Routes>
       {/* PUBLIC */}
-      <Route path="/" element={<PublicRoute><Home /></PublicRoute>} />
-      <Route path="/about" element={<PublicRoute><About /></PublicRoute>} />
-      <Route path="/chairman-message" element={<PublicRoute><ChairmanMessage /></PublicRoute>} />
-      <Route path="/principal-message" element={<PublicRoute><PrincipalMessage /></PublicRoute>} />
-      <Route path="/vision-mission" element={<PublicRoute><VisionMission /></PublicRoute>} />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Home />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <PublicRoute>
+            <About />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/chairman-message"
+        element={
+          <PublicRoute>
+            <ChairmanMessage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/principal-message"
+        element={
+          <PublicRoute>
+            <PrincipalMessage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/vision-mission"
+        element={
+          <PublicRoute>
+            <VisionMission />
+          </PublicRoute>
+        }
+      />
 
       <Route path="/academic/program" element={<PublicRoute><AcademicProgram /></PublicRoute>} />
       <Route path="/academic/curriculum" element={<PublicRoute><Curriculum /></PublicRoute>} />
@@ -365,20 +377,26 @@ function App() {
       <Route path="/blog" element={<PublicRoute><Blog /></PublicRoute>} />
       <Route path="/contact" element={<PublicRoute><Contact /></PublicRoute>} />
 
-      <Route path="/fee-payment" element={<PublicRoute><FeePayment /></PublicRoute>} />
-      <Route path="/online-registration" element={<PublicRoute><OnlineRegistration /></PublicRoute>} />
-
-      {/* LOGIN */}
+      {/* AUTH */}
+      <Route path="/login" element={<Login />} />
       <Route
-        path="/login"
+        path="/fee-payment"
         element={
-          <LoginRoute>
-            <Login />
-          </LoginRoute>
+          <PublicRoute>
+            <FeePayment />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/online-registration"
+        element={
+          <PublicRoute>
+            <OnlineRegistration />
+          </PublicRoute>
         }
       />
 
-      {/* ADMIN (PROTECTED) */}
+      {/* ADMIN */}
       <Route
         path="/dashboard"
         element={
@@ -403,9 +421,6 @@ function App() {
           </AdminRoute>
         }
       />
-
-      {/* FALLBACK */}
-      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

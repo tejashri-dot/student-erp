@@ -6,24 +6,65 @@ import {
   Button,
   Typography,
   Box,
+  InputAdornment,
   IconButton,
-  Divider,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import {
-  Google as GoogleIcon,
-  Email as EmailIcon,
-  Lock as LockIcon,
+  Google,
+  Facebook,
+  Visibility,
+  VisibilityOff,
+  Close,
+  Person,
+  Email,
+  Phone,
+  Lock,
+  School,
+  AdminPanelSettings,
+  People,
 } from "@mui/icons-material";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // 0 Student | 1 Parent | 2 Staff | 3 Admin
+  const [roleTab, setRoleTab] = useState(3);
+  // 0 Login | 1 Register
+  const [formType, setFormType] = useState(0);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+    rollNumber: "",
+  });
+
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    password: "",
+    confirmPassword: "",
+    rollNumber: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleClose = () => navigate("/");
+
+  const getRoleLabel = () =>
+    ["Student", "Parent", "Staff", "Admin"][roleTab];
+
+  /* ---------- LOGIN ---------- */
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/api/login", { username, password });
+      const res = await axios.post("/api/login", { username, password });
       onLogin(res.data);
     } catch (error) {
       console.error("Login failed", error);
@@ -32,128 +73,240 @@ export default function Login({ onLogin }) {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // Assuming Google auth is implemented, redirect or handle Google login
-    window.location.href = "/api/auth/google";
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    if (!validateRegister()) return;
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    if (users.find((u) => u.email === registerData.email)) {
+      alert("Email already registered");
+      setFormType(0);
+      return;
+    }
+
+    users.push({
+      ...registerData,
+      role: ["student", "parent", "staff", "admin"][roleTab],
+      rollNumber:
+        roleTab === 0 ? registerData.rollNumber || "R" + Date.now() : "",
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Registration successful");
+    setFormType(0);
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Paper
-          elevation={6}
-          sx={{
-            padding: 4,
-            width: "100%",
-            borderRadius: 3,
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            color: "white",
-          }}
-        >
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            gutterBottom
-            sx={{ fontWeight: "bold", mb: 3 }}
+    <Box
+      style={{
+        minHeight: "100vh",
+        background: "rgba(0,0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Container maxWidth="sm">
+        <Paper style={{ padding: 32, borderRadius: 16, position: "relative" }}>
+          <IconButton
+            onClick={handleClose}
+            style={{ position: "absolute", right: 10, top: 10 }}
           >
-            Welcome to ScholarSync
-          </Typography>
-          <Typography
-            variant="body1"
-            align="center"
-            sx={{ mb: 3, opacity: 0.9 }}
-          >
-            Sign in to access your dashboard
+            <Close />
+          </IconButton>
+
+          <Typography align="center" fontSize={26} fontWeight={700}>
+            Welcome to Mint School
           </Typography>
 
-          {/* Google Sign In Button */}
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<GoogleIcon />}
-            onClick={handleGoogleLogin}
-            sx={{
-              mb: 3,
-              color: "white",
-              borderColor: "white",
-              "&:hover": {
-                borderColor: "white",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-              },
+          <Tabs
+            value={roleTab}
+            onChange={(e, v) => {
+              setRoleTab(v);
+              setFormType(0);
             }}
+            variant="fullWidth"
+            style={{ marginTop: 20 }}
           >
-            Sign in with Google
-          </Button>
+            <Tab icon={<School />} label="Student" />
+            <Tab icon={<People />} label="Parent" />
+            <Tab icon={<Person />} label="Staff" />
+            <Tab icon={<AdminPanelSettings />} label="Admin" />
+          </Tabs>
 
-          <Divider sx={{ my: 3, borderColor: "rgba(255, 255, 255, 0.3)" }}>
-            <Typography variant="body2" sx={{ color: "white", opacity: 0.7 }}>
-              or
-            </Typography>
-          </Divider>
+          <Tabs
+            value={formType}
+            onChange={(e, v) => setFormType(v)}
+            variant="fullWidth"
+            style={{ marginTop: 20 }}
+          >
+            <Tab label="Login" />
+            <Tab label="Register" />
+          </Tabs>
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              InputProps={{
-                startAdornment: <EmailIcon sx={{ mr: 1, color: "gray" }} />,
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: 2,
-                },
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                startAdornment: <LockIcon sx={{ mr: 1, color: "gray" }} />,
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  borderRadius: 2,
-                },
-              }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                backgroundColor: "#4caf50",
-                "&:hover": { backgroundColor: "#45a049" },
-                borderRadius: 2,
-                fontWeight: "bold",
-              }}
-            >
-              Sign In
-            </Button>
-          </Box>
+          {/* ---------- LOGIN ---------- */}
+          {formType === 0 && (
+            <form onSubmit={handleLoginSubmit}>
+              <TextField
+                fullWidth
+                label="Email"
+                value={loginData.email}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {roleTab === 0 && (
+                <TextField
+                  fullWidth
+                  label="Roll Number"
+                  value={loginData.rollNumber}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, rollNumber: e.target.value })
+                  }
+                  margin="normal"
+                />
+              )}
+
+              <TextField
+                fullWidth
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                value={loginData.password}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  ),
+                }}
+              />
+
+              <Button
+                fullWidth
+                type="submit"
+                style={{
+                  marginTop: 20,
+                  background: "#2563eb",
+                  color: "#fff",
+                  padding: 12,
+                }}
+              >
+                Login as {getRoleLabel()}
+              </Button>
+            </form>
+          )}
+
+          {/* ---------- REGISTER ---------- */}
+          {formType === 1 && (
+            <form onSubmit={handleRegisterSubmit}>
+              <TextField
+                fullWidth
+                label="Full Name"
+                value={registerData.name}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, name: e.target.value })
+                }
+                error={!!errors.name}
+                helperText={errors.name}
+                margin="normal"
+              />
+
+              <TextField
+                fullWidth
+                label="Email"
+                value={registerData.email}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, email: e.target.value })
+                }
+                error={!!errors.email}
+                helperText={errors.email}
+                margin="normal"
+              />
+
+              <TextField
+                fullWidth
+                label="Contact"
+                value={registerData.contact}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    contact: e.target.value,
+                  })
+                }
+                error={!!errors.contact}
+                helperText={errors.contact}
+                margin="normal"
+              />
+
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                value={registerData.password}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    password: e.target.value,
+                  })
+                }
+                error={!!errors.password}
+                helperText={errors.password}
+                margin="normal"
+              />
+
+              <TextField
+                fullWidth
+                label="Confirm Password"
+                type="password"
+                value={registerData.confirmPassword}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    confirmPassword: e.target.value,
+                  })
+                }
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword}
+                margin="normal"
+              />
+
+              <Button
+                fullWidth
+                type="submit"
+                style={{
+                  marginTop: 20,
+                  background: "#2563eb",
+                  color: "#fff",
+                  padding: 12,
+                }}
+              >
+                Register
+              </Button>
+            </form>
+          )}
         </Paper>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 
