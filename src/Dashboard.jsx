@@ -39,8 +39,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/students").then((res) => setStudents(res.data));
-    axios.get("/api/staff").then((res) => setStaff(res.data));
+    axios.get("http://localhost:8080/api/students").then((res) => setStudents(res.data));
+    axios.get("http://localhost:8080/api/staff").then((res) => setStaff(res.data));
   }, []);
 
   const handleLogout = () => {
