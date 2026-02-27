@@ -76,6 +76,7 @@ function App() {
       <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
       <Route path="/students" element={<AdminRoute><StudentList /></AdminRoute>} />
       <Route path="/staff" element={<AdminRoute><StaffList /></AdminRoute>} />
+     
     </Routes>
   );
 }

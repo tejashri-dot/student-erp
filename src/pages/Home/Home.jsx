@@ -1,26 +1,60 @@
 import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
-
 function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Toggle dropdown on click
+  // 🎯 COUNTDOWN TARGET DATE
+  const EVENT_DATE = new Date("2026-02-15T20:30:00");
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  // ✅ LIVE COUNTDOWN EFFECT (FIXED)
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const diff = EVENT_DATE - now;
+
+      if (diff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      return {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft()); // run immediately
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Toggle dropdown
   const toggleDropdown = (dropdownName) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setActiveDropdown(null);
-    };
-
+    const handleClickOutside = () => setActiveDropdown(null);
     if (activeDropdown) {
       document.addEventListener("click", handleClickOutside);
-      return () => document.removeEventListener("click", handleClickOutside);
+      return () =>
+        document.removeEventListener("click", handleClickOutside);
     }
   }, [activeDropdown]);
 
@@ -31,14 +65,7 @@ function Home() {
     "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
   ];
 
-  const announcements = [
-    "Parent-Teacher conference will be help next week.",
-    "Get ready for our annual school fundraising event!",
-    "We're thrilled to introduce several new extracurricular clubs for our students.",
-    "Due to unforeseen circumstances, there has been a change in the upcoming exam schedule.",
-    "We're thrilled to announce that our school library renovation has begun!",
-  ];
-
+  // Auto slide
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -46,17 +73,14 @@ function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => {
+  const nextSlide = () =>
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
+  const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
 
   return (
     <div className={styles.app}>
-      {/* Hero Slider */}
+      {/* HERO SLIDER */}
       <section className="hero-slider">
         <div className="slider-container">
           {slides.map((slide, index) => (
@@ -67,31 +91,55 @@ function Home() {
               <img src={slide} alt={`Slide ${index + 1}`} />
             </div>
           ))}
+
           <button className="slider-btn prev" onClick={prevSlide}>
             ‹
           </button>
           <button className="slider-btn next" onClick={nextSlide}>
             ›
           </button>
+
+          {/* SLIDER DOTS */}
           <div className="slider-dots">
             {slides.map((_, index) => (
               <span
                 key={index}
                 className={`dot ${index === currentSlide ? "active" : ""}`}
                 onClick={() => setCurrentSlide(index)}
-              ></span>
+              />
             ))}
+          </div>
+
+          {/* ✅ LIVE COUNTDOWN */}
+          <div className="countdown">
+            <div>
+              <strong>{timeLeft.days}</strong>
+              <span>Days</span>
+            </div>
+            <div>
+              <strong>{timeLeft.hours}</strong>
+              <span>Hours</span>
+            </div>
+            <div>
+              <strong>{timeLeft.minutes}</strong>
+              <span>Minutes</span>
+            </div>
+            <div>
+              <strong>{timeLeft.seconds}</strong>
+              <span>Seconds</span>
+            </div>
           </div>
         </div>
       </section>
 
+
       {/* Welcome Section */}
       <section className="welcome-section">
         <div className="container">
-          <h1>Welcome to Mint School</h1>
+          <h1>Welcome to School</h1>
           <h2>Where Learning Meets Excellence</h2>
           <p>
-            At Mint International School, we strive to create an inspiring
+            At This School, we strive to create an inspiring
             environment that nurtures the intellectual, emotional, and social
             growth of every child. With our commitment to excellence, we blend
             modern teaching methodologies with state-of-the-art technology to
