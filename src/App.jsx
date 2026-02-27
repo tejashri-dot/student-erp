@@ -305,6 +305,9 @@ import StudentList from "./StudentList";
 import StaffList from "./StaffList";
 import FeePayment from "./pages/FeePayment";
 import OnlineRegistration from "./pages/OnlineRegistration";
+import AttendanceHome from "./pages/Attendance/AttendanceHome";
+import StudentAttendance from "./pages/Attendance/StudentAttendance";
+import StaffAttendance from "./pages/Attendance/StaffAttendance";
 
 
 function App() {
@@ -421,6 +424,32 @@ function App() {
           </AdminRoute>
         }
       />
+      <Route
+  path="/attendance"
+  element={
+    <AdminRoute>
+      <AttendanceHome />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/attendance/students"
+  element={
+    <AdminRoute>
+      <StudentAttendance />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/attendance/staff"
+  element={
+    <AdminRoute>
+      <StaffAttendance />
+    </AdminRoute>
+  }
+/>
     </Routes>
   );
 }
