@@ -1,0 +1,131 @@
+/* ================================
+   PAGE BACKGROUND
+================================ */
+body {
+  background-color: #f4f6f8;
+}
+
+/* ================================
+   FORM CONTAINER
+================================ */
+.admission-container {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* ================================
+   FORM CARD
+================================ */
+.admission-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+}
+
+/* ================================
+   HEADINGS
+================================ */
+.admission-card h2 {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.admission-card p {
+  color: #64748b;
+}
+
+/* ================================
+   LABELS
+================================ */
+.admission-card label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* ================================
+   INPUTS / SELECT / TEXTAREA
+================================ */
+.admission-card input,
+.admission-card select,
+.admission-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.admission-card input:focus,
+.admission-card select:focus,
+.admission-card textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ================================
+   PLACEHOLDER
+================================ */
+.admission-card input::placeholder,
+.admission-card textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* ================================
+   GRID SPACING
+================================ */
+.admission-card .grid {
+  margin-bottom: 10px;
+}
+
+/* ================================
+   SUBMIT BUTTON
+================================ */
+.admission-card button {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  border: none;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+}
+
+.admission-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+}
+
+.admission-card button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================================
+   REQUIRED STAR
+================================ */
+.admission-card label::after {
+  content: "";
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .admission-card {
+    padding: 25px;
+  }
+
+  .admission-card h2 {
+    font-size: 1.4rem;
+  }
+}
