@@ -178,7 +178,23 @@ function Home() {
           </div>
         </div>
       </section>
-
+<div className="countdown">
+  {["days", "hours", "minutes", "seconds"].map((unit) => (
+    <div className="time-box" key={unit}>
+      <div
+        className="time-scroll"
+        style={{
+          transform: `translateY(-${timeLeft[unit] * 100}%)`,
+        }}
+      >
+        {[...Array(100)].map((_, i) => (
+          <span key={i}>{i}</span>
+        ))}
+      </div>
+      <label>{unit.toUpperCase()}</label>
+    </div>
+  ))}
+</div>
       {/* Why Choose Section */}
       <section className="why-choose">
         <div className="container">

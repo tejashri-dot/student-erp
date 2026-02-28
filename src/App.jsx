@@ -399,12 +399,7 @@ function App() {
         }
       />
 
-<<<<<<< HEAD
-      <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
-      <Route path="/students" element={<AdminRoute><StudentList /></AdminRoute>} />
-      <Route path="/staff" element={<AdminRoute><StaffList /></AdminRoute>} />
-     
-=======
+
       {/* ADMIN */}
       <Route
         path="/dashboard"
@@ -456,7 +451,7 @@ function App() {
     </AdminRoute>
   }
 />
->>>>>>> f0427ecfbffc04eca9da9dbefd1402048eecae12
+
     </Routes>
   );
 }
