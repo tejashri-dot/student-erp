@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
+import ChatBot from "../ChatBot";
+import ScrollToTop from "../ScrollToTop";
+import AnimatedCounter from "../AnimatedCounter";
 function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -178,23 +181,7 @@ function Home() {
           </div>
         </div>
       </section>
-<div className="countdown">
-  {["days", "hours", "minutes", "seconds"].map((unit) => (
-    <div className="time-box" key={unit}>
-      <div
-        className="time-scroll"
-        style={{
-          transform: `translateY(-${timeLeft[unit] * 100}%)`,
-        }}
-      >
-        {[...Array(100)].map((_, i) => (
-          <span key={i}>{i}</span>
-        ))}
-      </div>
-      <label>{unit.toUpperCase()}</label>
-    </div>
-  ))}
-</div>
+
       {/* Why Choose Section */}
       <section className="why-choose">
         <div className="container">
@@ -647,30 +634,33 @@ function Home() {
 
       {/* Statistics */}
       <section className="statistics">
-        <div className="container">
-          <h2>Key Statistics</h2>
-          <p className="subtitle">Numbers that Matter</p>
+  <div className="container">
+    <h2>Key Statistics</h2>
+    <p className="subtitle">Numbers that Matter</p>
 
-          <div className="stats-grid">
-            <div className="stat-item">
-              <h3>2500+</h3>
-              <p>Students</p>
-            </div>
-            <div className="stat-item">
-              <h3>150+</h3>
-              <p>Employees</p>
-            </div>
-            <div className="stat-item">
-              <h3>12</h3>
-              <p>Departments</p>
-            </div>
-            <div className="stat-item">
-              <h3>50+</h3>
-              <p>Classes</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="stats-grid">
+      <div className="stat-item">
+        <AnimatedCounter end={2500} suffix="+" duration={1000} />
+        <p>Students</p>
+      </div>
+
+      <div className="stat-item">
+        <AnimatedCounter end={150} suffix="+" duration={1000} />
+        <p>Employees</p>
+      </div>
+
+      <div className="stat-item">
+        <AnimatedCounter end={12} duration={1000} />
+        <p>Departments</p>
+      </div>
+
+      <div className="stat-item">
+        <AnimatedCounter end={50} suffix="+" duration={1000} />
+        <p>Classes</p>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Gallery Section */}
       <section className="gallery-section" id="gallery">
@@ -684,10 +674,7 @@ function Home() {
           <div className="gallery-grid">
             <div className="gallery-card">
               <div className="gallery-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Gallery"
-                />
+                <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b" />
               </div>
               <div className="gallery-content">
                 <h3>Investiture Ceremony</h3>
@@ -701,10 +688,7 @@ function Home() {
 
             <div className="gallery-card">
               <div className="gallery-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Gallery"
-                />
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b" />
               </div>
               <div className="gallery-content">
                 <h3>Annual Event</h3>
@@ -717,10 +701,12 @@ function Home() {
 
             <div className="gallery-card">
               <div className="gallery-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Gallery"
-                />
+                <div className="blog-image">
+  <img
+    src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
+    alt="Technology in Classroom"
+  />
+</div>
               </div>
               <div className="gallery-content">
                 <h3>Graduation Ceremony</h3>
@@ -745,9 +731,9 @@ function Home() {
             <div className="blog-card">
               <div className="blog-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Blog"
-                />
+  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
+  alt="Technology in Classroom"
+/>
               </div>
               <div className="blog-content">
                 <h3>
@@ -769,10 +755,10 @@ function Home() {
 
             <div className="blog-card">
               <div className="blog-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Blog"
-                />
+               <img
+  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80"
+  alt="School Extracurricular Activities"
+/>
               </div>
               <div className="blog-content">
                 <h3>
@@ -795,9 +781,9 @@ function Home() {
             <div className="blog-card">
               <div className="blog-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Blog"
-                />
+  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+  alt="Positive School Culture"
+/>
               </div>
               <div className="blog-content">
                 <h3>
@@ -891,6 +877,8 @@ function Home() {
           </div>
         </div>
       </footer> */}
+      <ChatBot />
+      <ScrollToTop />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+
 
 const PublicLayout = ({ children }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -178,77 +179,91 @@ const PublicLayout = ({ children }) => {
           margin: 5px 0;
         }
 
-        /* ===== Footer ===== */
-        .footer {
-          background: #111;
-          color: #fff;
-          padding: 40px 0 20px;
-          margin-top: 40px;
-        }
+        /* ===== FOOTER ===== */
+.footer {
+  background: linear-gradient(135deg, #0a7c5c, #064e3b);
+  color: #e5e7eb;
+  padding: 60px 0 20px;
+  margin-top: 60px;
+}
 
-        .footer-content {
-          text-align: center;
-        }
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
 
-        .footer-info h3 {
-          margin-bottom: 10px;
-        }
+.footer-info h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
 
-        .footer-info p {
-          font-size: 14px;
-          margin-bottom: 6px;
-        }
+.footer-info p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+  color: #d1fae5;
+}
 
-        .footer-bottom {
-          margin-top: 20px;
-          border-top: 1px solid #333;
-          padding-top: 10px;
-          font-size: 13px;
-          text-align: center;
-        }
+/* ===== FOOTER LINKS ===== */
+.footer-links h4 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
 
-        /* ===== Responsive ===== */
-        @media (max-width: 768px) {
-          .mobile-menu-toggle {
-            display: block;
-          }
+.footer-links ul {
+  list-style: none;
+}
 
-          .nav-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: #fff;
-            flex-direction: column;
-            display: none;
-            border-top: 1px solid #ddd;
-          }
+.footer-links ul li {
+  margin-bottom: 8px;
+}
 
-          .nav-menu.active {
-            display: flex;
-          }
+.footer-links ul li a {
+  font-size: 14px;
+  color: #d1fae5;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
 
-          .nav-menu li {
-            width: 100%;
-          }
+.footer-links ul li a:hover {
+  color: #ffffff;
+  padding-left: 6px;
+}
 
-          .nav-menu li a {
-            width: 100%;
-            padding: 12px 20px;
-          }
+/* ===== FOOTER BOTTOM ===== */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #d1fae5;
+}
 
-          .dropdown-menu {
-            position: static;
-            border: none;
-            width: 100%;
-          }
+.footer-bottom p {
+  margin: 4px 0;
+}
 
-          .top-header-content {
-            flex-direction: column;
-            gap: 6px;
-            text-align: center;
-          }
-        }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .footer {
+    padding: 50px 0 20px;
+  }
+
+  .footer-info h3 {
+    text-align: center;
+  }
+
+  .footer-info p {
+    text-align: center;
+  }
+
+  .footer-content {
+    text-align: center;
+  }
+}
       `}</style>
 
 
@@ -429,6 +444,24 @@ const PublicLayout = ({ children }) => {
       <footer className="footer">
         <div className="container">
           <div className="footer-content">
+            <div className="footer-links">
+  <h4>Quick Links</h4>
+  <ul>
+    <li><Link to="/about">About Us</Link></li>
+    <li><Link to="/admission/procedure">Admissions</Link></li>
+    <li><Link to="/academic/program">Academics</Link></li>
+    <li><Link to="/contact">Contact</Link></li>
+  </ul>
+</div>
+
+<div className="footer-links">
+  <h4>Useful</h4>
+  <ul>
+    <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+    <li><Link to="/terms">Terms & Conditions</Link></li>
+    <li><Link to="/faq">FAQ</Link></li>
+  </ul>
+</div>
             <div className="footer-info">
               <h3> School</h3>
               <p>
@@ -438,13 +471,14 @@ const PublicLayout = ({ children }) => {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© InstiKit School ERP. All rights reserved.</p>
+            <p>© School ERP. All rights reserved.</p>
             <p>Designed with ❤️ by Revertech solution</p>
           </div>
         </div>
       </footer>
     </>
   );
+  <Outlet/>
 };
 
 export default PublicLayout;
