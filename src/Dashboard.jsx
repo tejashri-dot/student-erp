@@ -310,9 +310,9 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       const [studentsRes, staffRes, admissionRes] = await Promise.all([
-        axios.get("http://localhost:8080/api/students"),
-        axios.get("http://localhost:8080/api/staff"),
-        axios.get("http://localhost:8080/api/admission/all"),
+        axios.get("https://school-backend-6udp.onrender.com/api/students"),
+        axios.get("https://school-backend-6udp.onrender.com/api/staff"),
+        axios.get("https://school-backend-6udp.onrender.com/api/admission/all"),
       ]);
 
       setStudents(studentsRes.data || []);

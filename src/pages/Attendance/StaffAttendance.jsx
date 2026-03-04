@@ -9,13 +9,13 @@ export default function StaffAttendance() {
   const [staff, setStaff] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/staff").then((res) => {
+    axios.get("https://school-backend-6udp.onrender.com/api/staff").then((res) => {
       setStaff(res.data);
     });
   }, []);
 
   const markAttendance = (staffId, status) => {
-    axios.post("http://localhost:8080/api/attendance/mark", {
+    axios.post("https://school-backend-6udp.onrender.com/api/attendance/mark", {
       userId: staffId,
       userType: "Staff",
       date: new Date().toISOString().split("T")[0],

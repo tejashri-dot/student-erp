@@ -15,11 +15,11 @@ export default function Attendance() {
   const [status, setStatus] = useState("present");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/students").then((res) => setUsers(res.data));
+    axios.get("https://school-backend-6udp.onrender.com/api/students").then((res) => setUsers(res.data));
   }, []);
 
   const markAttendance = async (userId) => {
-    await axios.post("http://localhost:8080/api/attendance/mark", {
+    await axios.post("https://school-backend-6udp.onrender.com/api/attendance/mark", {
       userId,
       role: "student",
       status,

@@ -417,7 +417,7 @@ export default function Login() {
       return alert("Passwords do not match");
 
     try {
-      await axios.post("http://localhost:8080/api/auth/register", {
+      await axios.post("https://school-backend-6udp.onrender.com/api/auth/register", {
         ...registerData,
         role,
       });

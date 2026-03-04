@@ -358,7 +358,7 @@ export default function StaffList() {
     if (!window.confirm("Are you sure you want to delete this staff member?")) return;
 
     try {
-      await axios.delete(`http://localhost:8080/api/staff/${id}`);
+      await axios.delete(`https://school-backend-6udp.onrender.com/api/staff/${id}`);
       fetchStaff();
     } catch (error) {
       console.error("Error deleting staff:", error);

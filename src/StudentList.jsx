@@ -451,9 +451,9 @@ export default function StudentList() {
       };
 
       if (editing) {
-        await axios.put(`http://localhost:8080/api/students/${editing._id}`, payload);
+        await axios.put(`https://school-backend-6udp.onrender.com/api/students/${editing._id}`, payload);
       } else {
-        await axios.post("http://localhost:8080/api/students", payload);
+        await axios.post("https://school-backend-6udp.onrender.com/api/students", payload);
       }
 
       fetchStudents();
@@ -467,7 +467,7 @@ export default function StudentList() {
   /* ================= DELETE ================= */
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/students/${id}`);
+      await axios.delete(`https://school-backend-6udp.onrender.com/api/students/${id}`);
       fetchStudents();
     } catch (err) {
       console.error("Delete failed:", err);
