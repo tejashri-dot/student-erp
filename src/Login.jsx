@@ -394,7 +394,7 @@ export default function Login() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/login", {
+      const res = await axios.post("https://school-backend-6udp.onrender.com/api/auth/login", {
         ...loginData,
         role,
       });

@@ -37,7 +37,7 @@ function AdmissionForm() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8080/api/admission/create",
+        "https://school-backend-6udp.onrender.com/api/admission/create",
         formData
       );
 

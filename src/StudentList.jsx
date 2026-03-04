@@ -411,7 +411,7 @@ export default function StudentList() {
   /* ================= FETCH ================= */
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/students");
+      const res = await axios.get("https://school-backend-6udp.onrender.com/api/students");
 
       // ✅ Backend returns ARRAY
       setStudents(Array.isArray(res.data) ? res.data : []);

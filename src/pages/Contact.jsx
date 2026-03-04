@@ -118,7 +118,7 @@ function Contact() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8080/api/contact", {
+      const res = await fetch("https://school-backend-6udp.onrender.com/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

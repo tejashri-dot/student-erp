@@ -328,9 +328,9 @@ export default function StaffList() {
 
     try {
       if (editingStaff) {
-        await axios.put(`http://localhost:8080/api/staff/${editingStaff._id}`, formData);
+        await axios.put(`https://school-backend-6udp.onrender.com/api/staff/${editingStaff._id}`, formData);
       } else {
-        await axios.post("http://localhost:8080/api/staff", formData);
+        await axios.post("https://school-backend-6udp.onrender.com/api/staff", formData);
       }
 
       fetchStaff();

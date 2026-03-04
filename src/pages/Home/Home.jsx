@@ -413,10 +413,10 @@ function Home() {
           <div className="news-grid">
             <div className="news-card">
               <div className="news-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="News"
-                />
+               <img
+  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80"
+  alt="School Annual Day Celebration"
+/>
               </div>
               <div className="news-content">
                 <h3>School Annual Day Celebrated with Great Enthusiasm</h3>
@@ -433,9 +433,9 @@ function Home() {
             <div className="news-card">
               <div className="news-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="News"
-                />
+  src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=900&q=80"
+  alt="Students participating in science quiz"
+/>
               </div>
               <div className="news-content">
                 <h3>Our School Wins District-Level Science Quiz Competition</h3>
@@ -454,9 +454,9 @@ function Home() {
             <div className="news-card">
               <div className="news-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="News"
-                />
+  src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=900&q=80"
+  alt="Tree plantation drive at school"
+/>
               </div>
               <div className="news-content">
                 <h3>School Organizes Tree Plantation Drive on Campus</h3>
@@ -486,10 +486,10 @@ function Home() {
           <div className="events-grid">
             <div className="event-card">
               <div className="event-image">
-                <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Event"
-                />
+               <img
+  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80"
+  alt="Art Exhibition at School"
+/>
               </div>
               <div className="event-content">
                 <h3>Art Exhibition and Auction</h3>
@@ -510,9 +510,9 @@ function Home() {
             <div className="event-card">
               <div className="event-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Event"
-                />
+  src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
+  alt="School Sports Day"
+/>
               </div>
               <div className="event-content">
                 <h3>Sports Day Extravaganza</h3>
@@ -533,9 +533,9 @@ function Home() {
             <div className="event-card">
               <div className="event-image">
                 <img
-                  src="https://demo.instikit.com/images/icon.png"
-                  alt="Event"
-                />
+  src="https://images.unsplash.com/photo-1515169067865-5387ec356754?auto=format&fit=crop&w=900&q=80"
+  alt="School Talent Show Performance"
+/>
               </div>
               <div className="event-content">
                 <h3>School Talent Show</h3>
