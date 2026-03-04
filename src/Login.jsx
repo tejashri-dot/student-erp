@@ -362,12 +362,14 @@ import {
   AdminPanelSettings,
   People,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from 'axios';
 
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
 
   const [roleTab, setRoleTab] = useState(3);
   const [formType, setFormType] = useState(0);

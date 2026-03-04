@@ -1,101 +1,148 @@
+/* ===== PAGE WRAPPER ===== */
 .wrapper {
-  padding: 60px 0;
+  background: linear-gradient(135deg, #f0f4ff, #eef2f7);
+  padding: 80px 0;
 }
 
+/* ===== TITLES ===== */
 .title {
-  font-size: 32px;
+  text-align: center;
+  font-size: 36px;
   font-weight: 700;
-  margin-bottom: 6px;
+  color: #1e293b;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.desc {
-  max-width: 700px;
-  color: #666;
+  text-align: center;
+  font-size: 16px;
+  color: #64748b;
   margin-bottom: 40px;
 }
 
+/* ===== FORM ===== */
 .form {
-  max-width: 500px;
+  max-width: 800px;
+  margin: 0 auto 70px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
+/* ===== INPUT GROUP ===== */
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .field label {
   font-size: 14px;
+  font-weight: 600;
+  color: #334155;
   margin-bottom: 6px;
-  color: #333;
 }
 
 .field input,
 .field textarea {
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5f5;
+  font-size: 15px;
+  transition: all 0.3s ease;
   outline: none;
 }
 
 .field input:focus,
 .field textarea:focus {
-  border-color: #6a1b9a;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
+/* ===== ROW ===== */
 .row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
+/* ===== BUTTON ===== */
 .btn {
-  background: #6a1b9a;
-  color: #fff;
-  padding: 10px 22px;
+  margin-top: 10px;
+  padding: 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: #4a148c;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
 }
 
-/* Info cards */
+.btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===== INFO GRID ===== */
 .infoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
 }
 
+/* ===== INFO CARD ===== */
 .infoCard {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 18px;
   text-align: center;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+  transition: all 0.35s ease;
 }
 
-.icon {
-  font-size: 28px;
-  background: #6a1b9a;
-  color: #fff;
-  width: 50px;
-  height: 50px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  margin-bottom: 12px;
+.infoCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12);
 }
 
 .infoCard h4 {
-  margin-bottom: 6px;
+  font-size: 18px;
+  margin: 12px 0 6px;
+  color: #1e293b;
 }
 
 .infoCard p {
-  color: #555;
   font-size: 14px;
+  color: #64748b;
+}
+
+/* ===== ICON ===== */
+.icon {
+  font-size: 32px;
+  color: #2563eb;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    padding: 25px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
 }
