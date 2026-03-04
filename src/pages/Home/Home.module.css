@@ -1581,29 +1581,3 @@ h1, h2, h3 {
     height: 70vh;
   }
 }
-/* Hide default cursor */
-:global(body) {
-  cursor: none;
-}
-
-/* Tiny green dot */
-.dotCursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  background: #22c55e; /* GREEN */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease;
-}
-
-/* Zoom on hover */
-.active {
-  width: 18px;
-  height: 18px;
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
-}

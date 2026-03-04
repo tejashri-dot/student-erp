@@ -67,10 +67,8 @@ function Home() {
     "https://demo.instikit.com/storage/site/block/slider-image/slider3.webp",
     "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
   ];
-
 useEffect(() => {
-  const cursor = document.querySelector(`.${styles.dotCursor}`);
-  if (!cursor) return; // ✅ SAFETY CHECK
+  const cursor = document.querySelector(`.${styles.cursor}`);
 
   let x = 0;
   let y = 0;
@@ -88,22 +86,17 @@ useEffect(() => {
   window.addEventListener("mousemove", move);
   animate();
 
-  const zoomIn = () => cursor.classList.add(styles.active);
-  const zoomOut = () => cursor.classList.remove(styles.active);
-
-  document.querySelectorAll("button, a").forEach((el) => {
-    el.addEventListener("mouseenter", zoomIn);
-    el.addEventListener("mouseleave", zoomOut);
-  });
-
-  return () => {
-    window.removeEventListener("mousemove", move);
-    document.querySelectorAll("button, a").forEach((el) => {
-      el.removeEventListener("mouseenter", zoomIn);
-      el.removeEventListener("mouseleave", zoomOut);
-    });
-  };
+  return () => window.removeEventListener("mousemove", move);
 }, []);
+
+  // Auto slide
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const nextSlide = () =>
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () =>
@@ -113,7 +106,6 @@ useEffect(() => {
     <div className={styles.app}>
       <div className={styles.cursor}></div>
       {/* Custom Cursor */}
-<div className={styles.dotCursor}></div>
 
       {/* HERO SLIDER */}
       <section className="hero-slider">
