@@ -1394,7 +1394,7 @@ h1, h2, h3 {
 .welcome-section h1 {
   font-size: 4rem;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text; */
   -webkit-text-fill-color: transparent;
 }
 

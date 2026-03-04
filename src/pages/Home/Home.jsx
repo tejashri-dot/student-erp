@@ -67,27 +67,7 @@ function Home() {
     "https://demo.instikit.com/storage/site/block/slider-image/slider3.webp",
     "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
   ];
-useEffect(() => {
-  const cursor = document.querySelector(`.${styles.cursor}`);
 
-  let x = 0;
-  let y = 0;
-
-  const move = (e) => {
-    x = e.clientX;
-    y = e.clientY;
-  };
-
-  const animate = () => {
-    cursor.style.transform = `translate(${x}px, ${y}px)`;
-    requestAnimationFrame(animate);
-  };
-
-  window.addEventListener("mousemove", move);
-  animate();
-
-  return () => window.removeEventListener("mousemove", move);
-}, []);
 
   // Auto slide
   useEffect(() => {
@@ -104,8 +84,7 @@ useEffect(() => {
 
   return (
     <div className={styles.app}>
-      <div className={styles.cursor}></div>
-      {/* Custom Cursor */}
+      
 
       {/* HERO SLIDER */}
       <section className="hero-slider">
