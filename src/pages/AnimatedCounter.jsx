@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-export default function AnimatedCounter({
-  end,
-  duration = 1000,
-  suffix = "",
-}) {
+export default function AnimatedCounter({ end, duration = 1000, suffix = "" }) {
   const [count, setCount] = useState(0);
   const [blink, setBlink] = useState(false);
+  const spanRef = useRef(null);
 
   useEffect(() => {
     let start = 0;
@@ -29,9 +26,26 @@ export default function AnimatedCounter({
     return () => clearInterval(timer);
   }, [end, duration]);
 
+  // Apply animation via ref instead of inline style tag
+  useEffect(() => {
+    if (spanRef.current) {
+      if (blink) {
+        spanRef.current.style.animation = "blink 0.6s infinite";
+      } else {
+        spanRef.current.style.animation = "none";
+      }
+    }
+  }, [blink]);
+
   return (
-    <>
-      {/* INLINE BLINK ANIMATION */}
+    <span
+      ref={spanRef}
+      style={{
+        fontWeight: "bold",
+        fontSize: "32px",
+        transition: "opacity 0.2s ease",
+      }}
+    >
       <style>
         {`
           @keyframes blink {
@@ -41,18 +55,8 @@ export default function AnimatedCounter({
           }
         `}
       </style>
-
-      <span
-        style={{
-          animation: blink ? "blink 0.6s infinite" : "none",
-          fontWeight: "bold",
-          fontSize: "32px",
-          transition: "opacity 0.2s ease",
-        }}
-      >
-        {count}
-        {suffix}
-      </span>
-    </>
+      {count}
+      {suffix}
+    </span>
   );
 }

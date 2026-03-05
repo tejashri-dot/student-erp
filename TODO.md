@@ -1,38 +1,28 @@
-# TODO: Implement Frontend to Match https://demo.instikit.com/
+# Fix Plan for "Cannot read properties of null (reading 'style')" Error
 
-## 1. Create PublicLayout Component
+## Root Cause
 
-- [x] Create `frontend/src/PublicLayout.jsx` with header navigation and footer.
-- [x] Header: Logo, navigation menu (Home, About, Academic, Admission, Facilities, News, Gallery, Contact).
-- [x] Footer: Contact info, links, copyright.
+The error occurs because some components try to access browser-only APIs (document, window) during server-side rendering or before the component is mounted in the DOM.
 
-## 2. Update App.jsx
+## Files Fixed
 
-- [x] Wrap public routes with PublicLayout.
-- [x] Keep admin routes (dashboard, students, etc.) with existing Layout.
+### 1. ChatBot.jsx ✅
 
-## 3. Redesign Home.jsx
+**Issue**: Uses `window.SpeechRecognition` and `window.webkitSpeechRecognition` which don't exist during SSR
+**Fix**: Added `isBrowser` state and conditional checks to ensure browser-only code runs only on client
 
-- [x] Add hero section with banner image and call-to-action.
-- [x] Sections: About preview, Academic programs, Facilities, News, Contact.
-- [x] Use MUI components: Container, Grid, Card, Typography, Button.
+### 2. About.jsx ✅
 
-## 4. Update Other Pages
+**Issue**: `document.getElementById(id)` is called during render, which can return null
+**Fix**: Added null check before calling `scrollIntoView()`
 
-- [x] About.jsx: Full about section with chairman/principal messages, vision/mission.
-- [ ] AcademicProgram.jsx: Details on programs.
-- [ ] AdmissionProcedure.jsx: Admission steps.
-- [ ] Facilities: Transport, Library, Sports.
-- [ ] News.jsx: List of news items.
-- [ ] Gallery.jsx: Image gallery.
-- [ ] Contact.jsx: Contact form and info.
-- [ ] Add content and styling to all pages.
+### 3. AnimatedCounter.jsx ✅
 
-## 5. Ensure Responsive Design
+**Issue**: Uses inline `<style>` tag in JSX which can cause hydration issues
+**Fix**: Refactored to use `useRef` and separate `useEffect` to safely apply animation
 
-- [x] Use MUI breakpoints for mobile/tablet/desktop.
+## Status
 
-## 6. Test and Run
-
-- [x] Run `npm run dev` to preview.
-- [x] Check navigation, layout, responsiveness.
+- [x] Fix ChatBot.jsx - Add browser detection guards
+- [x] Fix About.jsx - Add null checks for document.getElementById
+- [x] Fix AnimatedCounter.jsx - Refactor style approach

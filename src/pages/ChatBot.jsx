@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
 const AUTO_REPLIES = [
-  { key: "admission", reply: "Admissions are open. Please visit the office or apply online." },
+  {
+    key: "admission",
+    reply: "Admissions are open. Please visit the office or apply online.",
+  },
   { key: "fees", reply: "Fee details are available in the parent portal." },
-  { key: "erp", reply: "Our ERP manages attendance, exams, and communication." },
+  {
+    key: "erp",
+    reply: "Our ERP manages attendance, exams, and communication.",
+  },
   { key: "transport", reply: "We provide GPS enabled transport facilities." },
   { key: "contact", reply: "You can contact us via email or school office." },
 ];
@@ -15,9 +21,17 @@ export default function VoiceChatBot() {
   ]);
   const [input, setInput] = useState("");
   const recognitionRef = useRef(null);
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  /* ---------------- BROWSER DETECTION ---------------- */
+  useEffect(() => {
+    setIsBrowser(typeof window !== "undefined");
+  }, []);
 
   /* ---------------- SPEECH RECOGNITION ---------------- */
   useEffect(() => {
+    if (!isBrowser) return;
+
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -35,10 +49,11 @@ export default function VoiceChatBot() {
     };
 
     recognitionRef.current = recognition;
-  }, []);
+  }, [isBrowser]);
 
   /* ---------------- TEXT TO SPEECH ---------------- */
   const speak = (text) => {
+    if (!isBrowser) return;
     const speech = new SpeechSynthesisUtterance(text);
     speech.lang = "en-US";
     speech.rate = 1;
@@ -53,9 +68,7 @@ export default function VoiceChatBot() {
     const userMsg = { from: "user", text };
     let reply = "Thank you. Our team will assist you shortly.";
 
-    const found = AUTO_REPLIES.find((r) =>
-      text.toLowerCase().includes(r.key)
-    );
+    const found = AUTO_REPLIES.find((r) => text.toLowerCase().includes(r.key));
 
     if (found) reply = found.reply;
 
@@ -80,10 +93,7 @@ export default function VoiceChatBot() {
     <>
       {/* OPEN BUTTON */}
       {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          style={openBtn}
-        >
+        <button onClick={() => setOpen(true)} style={openBtn}>
           Chat 🎙️
         </button>
       )}
@@ -93,7 +103,9 @@ export default function VoiceChatBot() {
         <div style={chatbot}>
           <div style={header}>
             Voice Assistant 🤖
-            <button onClick={() => setOpen(false)} style={closeBtn}>✕</button>
+            <button onClick={() => setOpen(false)} style={closeBtn}>
+              ✕
+            </button>
           </div>
 
           <div style={body}>
@@ -113,8 +125,12 @@ export default function VoiceChatBot() {
               style={inputStyle}
             />
 
-            <button onClick={startListening} style={micBtn}>🎤</button>
-            <button onClick={() => handleSend()} style={sendBtn}>Send</button>
+            <button onClick={startListening} style={micBtn}>
+              🎤
+            </button>
+            <button onClick={() => handleSend()} style={sendBtn}>
+              Send
+            </button>
           </div>
         </div>
       )}

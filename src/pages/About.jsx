@@ -26,10 +26,13 @@ const About = () => {
   const scrollToSection = (id) => {
     handleClose();
     setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     }, 100);
   };
 
@@ -56,7 +59,11 @@ const About = () => {
           About Sections
         </Button>
 
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
           <MenuItem onClick={() => scrollToSection("chairman")}>
             Message from Chairman
           </MenuItem>
@@ -75,8 +82,8 @@ const About = () => {
           Message from Chairman
         </Typography>
         <Typography color="text.secondary">
-          Education is the most powerful tool to shape the future. Our goal is to
-          nurture responsible global citizens through value-based education.
+          Education is the most powerful tool to shape the future. Our goal is
+          to nurture responsible global citizens through value-based education.
         </Typography>
       </Box>
 
