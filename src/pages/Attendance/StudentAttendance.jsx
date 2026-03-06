@@ -11,7 +11,7 @@ export default function StudentAttendance() {
   const token = localStorage.getItem("token"); // ✅ JWT
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/students", {
+    axios.get("https://school-backend-6udp.onrender.com/api/students", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

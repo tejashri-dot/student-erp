@@ -1,15 +1,183 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+// import styles from "./Home.module.css";
+// import { Link } from "react-router-dom";
+// import ChatBot from "../ChatBot";
+// import ScrollToTop from "../ScrollToTop";
+// import AnimatedCounter from "../AnimatedCounter";
+// function Home() {
+//   const [activeDropdown, setActiveDropdown] = useState(null);
+//   const [currentSlide, setCurrentSlide] = useState(0);
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+//   // 🎯 COUNTDOWN TARGET DATE
+//   const EVENT_DATE = new Date("2026-02-15T20:30:00");
+
+//   const [timeLeft, setTimeLeft] = useState({
+//     days: 0,
+//     hours: 0,
+//     minutes: 0,
+//     seconds: 0,
+//   });
+
+//   // ✅ LIVE COUNTDOWN EFFECT (FIXED)
+//   useEffect(() => {
+//     const calculateTimeLeft = () => {
+//       const now = new Date();
+//       const diff = EVENT_DATE - now;
+
+//       if (diff <= 0) {
+//         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+//       }
+
+//       return {
+//         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+//         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+//         minutes: Math.floor((diff / (1000 * 60)) % 60),
+//         seconds: Math.floor((diff / 1000) % 60),
+//       };
+//     };
+
+//     setTimeLeft(calculateTimeLeft()); // run immediately
+
+//     const timer = setInterval(() => {
+//       setTimeLeft(calculateTimeLeft());
+//     }, 1000);
+
+//     return () => clearInterval(timer);
+//   }, []);
+
+//   // Toggle dropdown
+//   const toggleDropdown = (dropdownName) => {
+//     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
+//   };
+
+//   // Close dropdown when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = () => setActiveDropdown(null);
+//     if (activeDropdown) {
+//       document.addEventListener("click", handleClickOutside);
+//       return () =>
+//         document.removeEventListener("click", handleClickOutside);
+//     }
+//   }, [activeDropdown]);
+
+//   const slides = [
+//     "https://demo.instikit.com/storage/site/block/slider-image/slider1.webp",
+//     "https://demo.instikit.com/storage/site/block/slider-image/slider2.webp",
+//     "https://demo.instikit.com/storage/site/block/slider-image/slider3.webp",
+//     "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
+//   ];
+// useEffect(() => {
+//   const cursor = document.querySelector(`.${styles.cursor}`);
+
+//   let x = 0;
+//   let y = 0;
+
+//   const move = (e) => {
+//     x = e.clientX;
+//     y = e.clientY;
+//   };
+
+//   const animate = () => {
+//     cursor.style.transform = `translate(${x}px, ${y}px)`;
+//     requestAnimationFrame(animate);
+//   };
+
+//   window.addEventListener("mousemove", move);
+//   animate();
+
+//   return () => window.removeEventListener("mousemove", move);
+// }, []);
+
+//   // Auto slide
+//   useEffect(() => {
+//     const timer = setInterval(() => {
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     }, 5000);
+//     return () => clearInterval(timer);
+//   }, []);
+
+//   const nextSlide = () =>
+//     setCurrentSlide((prev) => (prev + 1) % slides.length);
+//   const prevSlide = () =>
+//     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+//   return (
+//     <div className={styles.app}>
+//       <div className={styles.cursor}></div>
+//       {/* Custom Cursor */}
+
+//       {/* HERO SLIDER */}
+//       <section className="hero-slider">
+//         <div className="slider-container">
+//           {slides.map((slide, index) => (
+//             <div
+//               key={index}
+//               className={`slide ${index === currentSlide ? "active" : ""}`}
+//             >
+//               <img src={slide} alt={`Slide ${index + 1}`} />
+//             </div>
+//           ))}
+
+//           <button className="slider-btn prev" onClick={prevSlide}>
+//             ‹
+//           </button>
+//           <button className="slider-btn next" onClick={nextSlide}>
+//             ›
+//           </button>
+
+//           {/* SLIDER DOTS */}
+//           <div className="slider-dots">
+//             {slides.map((_, index) => (
+//               <span
+//                 key={index}
+//                 className={`dot ${index === currentSlide ? "active" : ""}`}
+//                 onClick={() => setCurrentSlide(index)}
+//               />
+//             ))}
+//           </div>
+
+//           {/* ✅ LIVE COUNTDOWN */}
+//           <div className="countdown">
+//             <div>
+//               <strong>{timeLeft.days}</strong>
+//               <span>Days</span>
+//             </div>
+//             <div>
+//               <strong>{timeLeft.hours}</strong>
+//               <span>Hours</span>
+//             </div>
+//             <div>
+//               <strong>{timeLeft.minutes}</strong>
+//               <span>Minutes</span>
+//             </div>
+//             <div>
+//               <strong>{timeLeft.seconds}</strong>
+//               <span>Seconds</span>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+
+
+
+import { useState, useEffect, useRef } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
 import ChatBot from "../ChatBot";
 import ScrollToTop from "../ScrollToTop";
 import AnimatedCounter from "../AnimatedCounter";
+
 function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // 🎯 COUNTDOWN TARGET DATE
+  /* ================= CURSOR REF (FIX) ================= */
+  const cursorRef = useRef(null);
+
+  /* ================= EVENT COUNTDOWN ================= */
   const EVENT_DATE = new Date("2026-02-15T20:30:00");
 
   const [timeLeft, setTimeLeft] = useState({
@@ -19,15 +187,11 @@ function Home() {
     seconds: 0,
   });
 
-  // ✅ LIVE COUNTDOWN EFFECT (FIXED)
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const now = new Date();
-      const diff = EVENT_DATE - now;
-
-      if (diff <= 0) {
+      const diff = EVENT_DATE - new Date();
+      if (diff <= 0)
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-      }
 
       return {
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -37,30 +201,44 @@ function Home() {
       };
     };
 
-    setTimeLeft(calculateTimeLeft()); // run immediately
-
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(
+      () => setTimeLeft(calculateTimeLeft()),
+      1000
+    );
 
     return () => clearInterval(timer);
   }, []);
 
-  // Toggle dropdown
-  const toggleDropdown = (dropdownName) => {
-    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
-  };
-
-  // Close dropdown when clicking outside
+  /* ================= CUSTOM CURSOR (FIXED) ================= */
   useEffect(() => {
-    const handleClickOutside = () => setActiveDropdown(null);
-    if (activeDropdown) {
-      document.addEventListener("click", handleClickOutside);
-      return () =>
-        document.removeEventListener("click", handleClickOutside);
-    }
-  }, [activeDropdown]);
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
+    let x = 0;
+    let y = 0;
+    let rafId;
+
+    const move = (e) => {
+      x = e.clientX;
+      y = e.clientY;
+    };
+
+    const animate = () => {
+      cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      rafId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", move);
+    animate();
+
+    return () => {
+      window.removeEventListener("mousemove", move);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  /* ================= SLIDER ================= */
   const slides = [
     "https://demo.instikit.com/storage/site/block/slider-image/slider1.webp",
     "https://demo.instikit.com/storage/site/block/slider-image/slider2.webp",
@@ -68,12 +246,16 @@ function Home() {
     "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
   ];
 
+<<<<<<< HEAD
 
   // Auto slide
+=======
+>>>>>>> 2e3a5d80d2e4e62b9ddb5367cd5e867e5f0b09fb
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    const timer = setInterval(
+      () => setCurrentSlide((prev) => (prev + 1) % slides.length),
+      5000
+    );
     return () => clearInterval(timer);
   }, []);
 
@@ -82,11 +264,25 @@ function Home() {
   const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
+  /* ================= DROPDOWN CLOSE ================= */
+  useEffect(() => {
+    if (!activeDropdown) return;
+    const close = () => setActiveDropdown(null);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [activeDropdown]);
+
+  /* ================= JSX ================= */
   return (
     <div className={styles.app}>
+<<<<<<< HEAD
       
+=======
+      {/* ✅ CUSTOM CURSOR */}
+      <div ref={cursorRef} className={styles.cursor}></div>
+>>>>>>> 2e3a5d80d2e4e62b9ddb5367cd5e867e5f0b09fb
 
-      {/* HERO SLIDER */}
+      {/* ================= HERO SLIDER ================= */}
       <section className="hero-slider">
         <div className="slider-container">
           {slides.map((slide, index) => (
@@ -105,7 +301,6 @@ function Home() {
             ›
           </button>
 
-          {/* SLIDER DOTS */}
           <div className="slider-dots">
             {slides.map((_, index) => (
               <span
@@ -116,24 +311,14 @@ function Home() {
             ))}
           </div>
 
-          {/* ✅ LIVE COUNTDOWN */}
+          {/* COUNTDOWN */}
           <div className="countdown">
-            <div>
-              <strong>{timeLeft.days}</strong>
-              <span>Days</span>
-            </div>
-            <div>
-              <strong>{timeLeft.hours}</strong>
-              <span>Hours</span>
-            </div>
-            <div>
-              <strong>{timeLeft.minutes}</strong>
-              <span>Minutes</span>
-            </div>
-            <div>
-              <strong>{timeLeft.seconds}</strong>
-              <span>Seconds</span>
-            </div>
+            {Object.entries(timeLeft).map(([key, val]) => (
+              <div key={key}>
+                <strong>{val}</strong>
+                <span>{key}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
