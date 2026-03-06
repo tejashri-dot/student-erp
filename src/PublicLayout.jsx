@@ -264,6 +264,20 @@ const PublicLayout = ({ children }) => {
     text-align: center;
   }
 }
+  .nav-link{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.arrow{
+  font-size:12px;
+  transition:0.3s;
+}
+
+.dropdown:hover .arrow{
+  transform:rotate(180deg);
+}
       `}</style>
 
 
@@ -327,96 +341,101 @@ const PublicLayout = ({ children }) => {
               <li>
                 <Link to="/">Home</Link>
               </li>
-              <li
-                className="dropdown"
-                onMouseEnter={() => setActiveDropdown("about")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/about">About</Link>
-                {activeDropdown === "about" && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link to="/chairman-message">Message from Chairman</Link>
-                    </li>
-                    <li>
-                      <Link to="/principal-message">
-                        Message from Principal
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/vision-mission">Vision & Mission</Link>
-                    </li>
-                  </ul>
-                )}
-              </li>
+             
+                
+                {/* ABOUT */}
+<li
+  className="dropdown"
+  onMouseEnter={() => setActiveDropdown("about")}
+  onMouseLeave={() => setActiveDropdown(null)}
+>
+  <Link to="/about" className="nav-link">
+    About <span className="arrow">▾</span>
+  </Link>
+
+  {activeDropdown === "about" && (
+    <ul className="dropdown-menu">
+      <li>
+        <Link to="/chairman-message">Message from Chairman</Link>
+      </li>
+      <li>
+        <Link to="/principal-message">Message from Principal</Link>
+      </li>
+      <li>
+        <Link to="/vision-mission">Vision & Mission</Link>
+      </li>
+    </ul>
+  )}
+</li>
+
               <li
                 className="dropdown"
                 onMouseEnter={() => setActiveDropdown("academic")}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <Link to="/academic/program">Academic</Link>
-                {activeDropdown === "academic" && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link to="/academic/program">Programs</Link>
-                    </li>
-                    <li>
-                      <Link to="/academic/curriculum">Curriculum</Link>
-                    </li>
-                    <li>
-                      <Link to="/academic/events">Events</Link>
-                    </li>
-                    <li>
-                      <Link to="/academic/announcements">Announcements</Link>
-                    </li>
-                    <li>
-                      <Link to="/academic/rules-regulations">
-                        Rules & Regulations
-                      </Link>
-                    </li>
-                  </ul>
-                )}
-              </li>
-              <li
-                className="dropdown"
-                onMouseEnter={() => setActiveDropdown("admission")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/admission/procedure">Admission</Link>
-                {activeDropdown === "admission" && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link to="/admission/procedure">Procedure</Link>
-                    </li>
-                    <li>
-                      <Link to="/admission/form">Admission Form</Link>
-                    </li>
-                    <li>
-                      <Link to="/admission/fee-structure">Fee Structure</Link>
-                    </li>
-                  </ul>
-                )}
-              </li>
-              <li
-                className="dropdown"
-                onMouseEnter={() => setActiveDropdown("facilities")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link to="/facilities/transport">Facilities</Link>
-                {activeDropdown === "facilities" && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link to="/facilities/transport">Transport</Link>
-                    </li>
-                    <li>
-                      <Link to="/facilities/library">Library</Link>
-                    </li>
-                    <li>
-                      <Link to="/facilities/sports">Sports</Link>
-                    </li>
-                  </ul>
-                )}
-              </li>
+                <Link to="/academic/program" className="nav-link">
+    Academic <span className="arrow">▾</span>
+  </Link>
+                 {activeDropdown === "academic" && (
+    <ul className="dropdown-menu">
+      <li><Link to="/academic/program">Programs</Link></li>
+      <li><Link to="/academic/curriculum">Curriculum</Link></li>
+      <li><Link to="/academic/events">Events</Link></li>
+      <li><Link to="/academic/announcements">Announcements</Link></li>
+      <li><Link to="/academic/rules-regulations">Rules & Regulations</Link></li>
+    </ul>
+  )}
+</li>
+             
+{/* ADMISSION */}
+<li
+  className="dropdown"
+  onMouseEnter={() => setActiveDropdown("admission")}
+  onMouseLeave={() => setActiveDropdown(null)}
+>
+  <Link to="/admission/procedure" className="nav-link">
+    Admission <span className="arrow">▾</span>
+  </Link>
+
+  {activeDropdown === "admission" && (
+    <ul className="dropdown-menu">
+      <li>
+        <Link to="/admission/procedure">Procedure</Link>
+      </li>
+      <li>
+        <Link to="/admission/form">Admission Form</Link>
+      </li>
+      <li>
+        <Link to="/admission/fee-structure">Fee Structure</Link>
+      </li>
+    </ul>
+  )}
+</li>
+
+            {/* FACILITIES */}
+<li
+  className="dropdown"
+  onMouseEnter={() => setActiveDropdown("facilities")}
+  onMouseLeave={() => setActiveDropdown(null)}
+>
+  <Link to="/facilities/transport" className="nav-link">
+    Facilities <span className="arrow">▾</span>
+  </Link>
+
+  {activeDropdown === "facilities" && (
+    <ul className="dropdown-menu">
+      <li>
+        <Link to="/facilities/transport">Transport</Link>
+      </li>
+      <li>
+        <Link to="/facilities/library">Library</Link>
+      </li>
+      <li>
+        <Link to="/facilities/sports">Sports</Link>
+      </li>
+    </ul>
+  )}
+</li>
               <li>
                 <Link to="/news">News</Link>
               </li>
