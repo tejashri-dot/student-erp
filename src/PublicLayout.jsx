@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-
 const PublicLayout = ({ children }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-
-
-
-
- {/* ================= INSIDE CSS ================= */}
+      {/* ================= INSIDE CSS ================= */}
       <style>{`
         * {
           margin: 0;
@@ -280,8 +275,6 @@ const PublicLayout = ({ children }) => {
 }
       `}</style>
 
-
-    
       {/* Top Announcement Bar */}
       <div className="announcement-bar">
         <div className="announcement-scroll">
@@ -322,10 +315,7 @@ const PublicLayout = ({ children }) => {
         <div className="container">
           <div className="nav-content">
             <div className="logo">
-              <img
-                src="/mnt/data/a_vector_style_logo_features_a_stylized_letter_r.pnghttps://chatgpt.com/c/69a166dc-6f6c-8320-b97a-7ebaec39c4cd"
-                alt="Mint School Logo"
-              />
+              <img src="/revere-tech-school-logo.png" alt="School Logo" />
             </div>
 
             <button
@@ -341,32 +331,33 @@ const PublicLayout = ({ children }) => {
               <li>
                 <Link to="/">Home</Link>
               </li>
-             
-                
-                {/* ABOUT */}
-<li
-  className="dropdown"
-  onMouseEnter={() => setActiveDropdown("about")}
-  onMouseLeave={() => setActiveDropdown(null)}
->
-  <Link to="/about" className="nav-link">
-    About <span className="arrow">▾</span>
-  </Link>
 
-  {activeDropdown === "about" && (
-    <ul className="dropdown-menu">
-      <li>
-        <Link to="/chairman-message">Message from Chairman</Link>
-      </li>
-      <li>
-        <Link to="/principal-message">Message from Principal</Link>
-      </li>
-      <li>
-        <Link to="/vision-mission">Vision & Mission</Link>
-      </li>
-    </ul>
-  )}
-</li>
+              {/* ABOUT */}
+              <li
+                className="dropdown"
+                onMouseEnter={() => setActiveDropdown("about")}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link to="/about" className="nav-link">
+                  About <span className="arrow">▾</span>
+                </Link>
+
+                {activeDropdown === "about" && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/chairman-message">Message from Chairman</Link>
+                    </li>
+                    <li>
+                      <Link to="/principal-message">
+                        Message from Principal
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/vision-mission">Vision & Mission</Link>
+                    </li>
+                  </ul>
+                )}
+              </li>
 
               <li
                 className="dropdown"
@@ -374,77 +365,89 @@ const PublicLayout = ({ children }) => {
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link to="/academic/program" className="nav-link">
-    Academic <span className="arrow">▾</span>
-  </Link>
-                 {activeDropdown === "academic" && (
-    <ul className="dropdown-menu">
-      <li><Link to="/academic/program">Programs</Link></li>
-      <li><Link to="/academic/curriculum">Curriculum</Link></li>
-      <li><Link to="/academic/events">Events</Link></li>
-      <li><Link to="/academic/announcements">Announcements</Link></li>
-      <li><Link to="/academic/rules-regulations">Rules & Regulations</Link></li>
-    </ul>
-  )}
-</li>
-             
-{/* ADMISSION */}
-<li
-  className="dropdown"
-  onMouseEnter={() => setActiveDropdown("admission")}
-  onMouseLeave={() => setActiveDropdown(null)}
->
-  <Link to="/admission/procedure" className="nav-link">
-    Admission <span className="arrow">▾</span>
-  </Link>
-
-  {activeDropdown === "admission" && (
-    <ul className="dropdown-menu">
-      <li>
-        <Link to="/admission/procedure">Procedure</Link>
-      </li>
-      <li>
-        <Link to="/admission/form">Admission Form</Link>
-      </li>
-      <li>
-        <Link to="/admission/fee-structure">Fee Structure</Link>
-      </li>
-    </ul>
-  )}
-</li>
-
-            {/* FACILITIES */}
-<li
-  className="dropdown"
-  onMouseEnter={() => setActiveDropdown("facilities")}
-  onMouseLeave={() => setActiveDropdown(null)}
->
-  <Link to="/facilities/transport" className="nav-link">
-    Facilities <span className="arrow">▾</span>
-  </Link>
-
-  {activeDropdown === "facilities" && (
-    <ul className="dropdown-menu">
-      <li>
-        <Link to="/facilities/transport">Transport</Link>
-      </li>
-      <li>
-        <Link to="/facilities/library">Library</Link>
-      </li>
-      <li>
-        <Link to="/facilities/sports">Sports</Link>
-      </li>
-    </ul>
-  )}
-</li>
-              <li>
-                <Link to="/news">News</Link>
+                  Academic <span className="arrow">▾</span>
+                </Link>
+                {activeDropdown === "academic" && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/academic/program">Programs</Link>
+                    </li>
+                    <li>
+                      <Link to="/academic/curriculum">Curriculum</Link>
+                    </li>
+                    <li>
+                      <Link to="/academic/events">Events</Link>
+                    </li>
+                    <li>
+                      <Link to="/academic/announcements">Announcements</Link>
+                    </li>
+                    <li>
+                      <Link to="/academic/rules-regulations">
+                        Rules & Regulations
+                      </Link>
+                    </li>
+                  </ul>
+                )}
               </li>
+
+              {/* ADMISSION */}
+              <li
+                className="dropdown"
+                onMouseEnter={() => setActiveDropdown("admission")}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link to="/admission/procedure" className="nav-link">
+                  Admission <span className="arrow">▾</span>
+                </Link>
+
+                {activeDropdown === "admission" && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/admission/procedure">Procedure</Link>
+                    </li>
+                    <li>
+                      <Link to="/admission/form">Admission Form</Link>
+                    </li>
+                    <li>
+                      <Link to="/admission/fee-structure">Fee Structure</Link>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              {/* FACILITIES */}
+              {/* <li
+                className="dropdown"
+                onMouseEnter={() => setActiveDropdown("facilities")}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link to="/facilities/transport" className="nav-link">
+                  Facilities <span className="arrow">▾</span>
+                </Link>
+
+                {activeDropdown === "facilities" && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/facilities/transport">Transport</Link>
+                    </li>
+                    <li>
+                      <Link to="/facilities/library">Library</Link>
+                    </li>
+                    <li>
+                      <Link to="/facilities/sports">Sports</Link>
+                    </li>
+                  </ul>
+                )}
+              </li> */}
+              {/* <li>
+                <Link to="/news">News</Link>
+              </li> */}
               <li>
                 <Link to="/gallery">Gallery</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/blog">Blog</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/contact">Contact</Link>
               </li>
@@ -464,23 +467,37 @@ const PublicLayout = ({ children }) => {
         <div className="container">
           <div className="footer-content">
             <div className="footer-links">
-  <h4>Quick Links</h4>
-  <ul>
-    <li><Link to="/about">About Us</Link></li>
-    <li><Link to="/admission/procedure">Admissions</Link></li>
-    <li><Link to="/academic/program">Academics</Link></li>
-    <li><Link to="/contact">Contact</Link></li>
-  </ul>
-</div>
+              <h4>Quick Links</h4>
+              <ul>
+                <li>
+                  <Link to="/about">About Us</Link>
+                </li>
+                <li>
+                  <Link to="/admission/procedure">Admissions</Link>
+                </li>
+                <li>
+                  <Link to="/academic/program">Academics</Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact</Link>
+                </li>
+              </ul>
+            </div>
 
-<div className="footer-links">
-  <h4>Useful</h4>
-  <ul>
-    <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-    <li><Link to="/terms">Terms & Conditions</Link></li>
-    <li><Link to="/faq">FAQ</Link></li>
-  </ul>
-</div>
+            <div className="footer-links">
+              <h4>Useful</h4>
+              <ul>
+                <li>
+                  <Link to="/privacy-policy">Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link to="/terms">Terms & Conditions</Link>
+                </li>
+                <li>
+                  <Link to="/faq">FAQ</Link>
+                </li>
+              </ul>
+            </div>
             <div className="footer-info">
               <h3> School</h3>
               <p>
@@ -497,7 +514,7 @@ const PublicLayout = ({ children }) => {
       </footer>
     </>
   );
-  <Outlet/>
+  <Outlet />;
 };
 
 export default PublicLayout;

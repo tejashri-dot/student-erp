@@ -159,9 +159,6 @@
 //         </div>
 //       </section>
 
-
-
-
 import { useState, useEffect, useRef } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
@@ -190,8 +187,7 @@ function Home() {
   useEffect(() => {
     const calculateTimeLeft = () => {
       const diff = EVENT_DATE - new Date();
-      if (diff <= 0)
-        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
       return {
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -202,10 +198,7 @@ function Home() {
     };
 
     setTimeLeft(calculateTimeLeft());
-    const timer = setInterval(
-      () => setTimeLeft(calculateTimeLeft()),
-      1000
-    );
+    const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -239,28 +232,22 @@ function Home() {
   }, []);
 
   /* ================= SLIDER ================= */
-  const slides = [
-    "https://demo.instikit.com/storage/site/block/slider-image/slider1.webp",
-    "https://demo.instikit.com/storage/site/block/slider-image/slider2.webp",
-    "https://demo.instikit.com/storage/site/block/slider-image/slider3.webp",
-    "https://demo.instikit.com/storage/site/block/slider-image/slider4.webp",
-  ];
+ const slides = [
+  "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80"
+];
 
-<<<<<<< HEAD
-
-  // Auto slide
-=======
->>>>>>> 2e3a5d80d2e4e62b9ddb5367cd5e867e5f0b09fb
   useEffect(() => {
     const timer = setInterval(
       () => setCurrentSlide((prev) => (prev + 1) % slides.length),
-      5000
+      5000,
     );
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () =>
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
@@ -275,13 +262,6 @@ function Home() {
   /* ================= JSX ================= */
   return (
     <div className={styles.app}>
-<<<<<<< HEAD
-      
-=======
-      {/* ✅ CUSTOM CURSOR */}
-      <div ref={cursorRef} className={styles.cursor}></div>
->>>>>>> 2e3a5d80d2e4e62b9ddb5367cd5e867e5f0b09fb
-
       {/* ================= HERO SLIDER ================= */}
       <section className="hero-slider">
         <div className="slider-container">
@@ -323,18 +303,17 @@ function Home() {
         </div>
       </section>
 
-
       {/* Welcome Section */}
       <section className="welcome-section">
         <div className="container">
-          <h1>Welcome to School</h1>
+          <h1>Welcome to  Revere Tech School</h1>
           <h2>Where Learning Meets Excellence</h2>
           <p>
-            At This School, we strive to create an inspiring
-            environment that nurtures the intellectual, emotional, and social
-            growth of every child. With our commitment to excellence, we blend
-            modern teaching methodologies with state-of-the-art technology to
-            empower students to thrive in a globalized world.
+            At This School, we strive to create an inspiring environment that
+            nurtures the intellectual, emotional, and social growth of every
+            child. With our commitment to excellence, we blend modern teaching
+            methodologies with state-of-the-art technology to empower students
+            to thrive in a globalized world.
           </p>
 
           <blockquote>
@@ -344,12 +323,12 @@ function Home() {
 
           <div className="content-with-image">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block1.webp"
+              src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1200&q=80"
               alt="School Cover"
             />
             <div className="text-content">
               <p>
-                At Mint International School, we strive to create an inspiring
+                At  Revere Tech School, we strive to create an inspiring
                 environment that nurtures the intellectual, emotional, and
                 social growth of every child. With our commitment to excellence,
                 we blend modern teaching methodologies with state-of-the-art
@@ -373,7 +352,7 @@ function Home() {
       {/* Why Choose Section */}
       <section className="why-choose">
         <div className="container">
-          <h2>Why Choose Mint International School?</h2>
+          <h2>Why Choose  Revere Tech School?</h2>
 
           <div className="features-grid">
             <div className="feature-item">
@@ -388,16 +367,15 @@ function Home() {
             <div className="feature-item">
               <h3>Modern Infrastructure</h3>
               <p>
-                From spacious classrooms to well-equipped labs, Mint
-                International School provides facilities that ensure a conducive
+                From spacious classrooms to well-equipped labs,  Revere Tech School provides facilities that ensure a conducive
                 learning environment for every student.
               </p>
             </div>
 
             <div className="feature-item">
-              <h3>Smart Learning with InstiKit</h3>
+              <h3>Smart Learning with  Revere Tech School</h3>
               <p>
-                We've partnered with InstiKit School ERP to streamline the
+                We've partnered with  Revere Tech School ERP to streamline the
                 school experience for students, parents, and teachers. InstiKit
                 enables:
               </p>
@@ -437,18 +415,18 @@ function Home() {
         <div className="container">
           <div className="feature-block">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block1.webp"
+              src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&w=1200&q=80"
               alt="Smart Communication"
             />
             <div className="feature-content">
               <h2>Smart Communication</h2>
               <h3>Stay Connected Anytime, Anywhere</h3>
               <p>
-                Mint International School leverages InstiKit School ERP to
-                enable seamless communication between parents, teachers, and
-                students. Receive real-time updates on attendance, events, and
-                academic progress through instant notifications and messaging.
-                Stay informed and engaged with your child's education like never
+                 Revere Tech School leverages School ERP to enable
+                seamless communication between parents, teachers, and students.
+                Receive real-time updates on attendance, events, and academic
+                progress through instant notifications and messaging. Stay
+                informed and engaged with your child's education like never
                 before.
               </p>
             </div>
@@ -456,7 +434,7 @@ function Home() {
 
           <div className="feature-block reverse">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block2.webp"
+              src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=1200&q=80"
               alt="Online Exam"
             />
             <div className="feature-content">
@@ -474,7 +452,7 @@ function Home() {
 
           <div className="feature-block">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block3.webp"
+              src="https://picsum.photos/800/600?random=13"
               alt="Fee Management"
             />
             <div className="feature-content">
@@ -496,7 +474,7 @@ function Home() {
       <section className="opportunities">
         <div className="container">
           <h2>Discover a World of Opportunities</h2>
-          <p>At Mint International School, we go beyond academics to offer:</p>
+          <p>At Revere Tech School, we go beyond academics to offer:</p>
           <div className="opportunities-grid">
             <div className="opportunity-item">
               <strong>Extracurricular Activities:</strong> Sports, music, art,
@@ -601,10 +579,10 @@ function Home() {
           <div className="news-grid">
             <div className="news-card">
               <div className="news-image">
-               <img
-  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80"
-  alt="School Annual Day Celebration"
-/>
+                <img
+                  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80"
+                  alt="School Annual Day Celebration"
+                />
               </div>
               <div className="news-content">
                 <h3>School Annual Day Celebrated with Great Enthusiasm</h3>
@@ -621,9 +599,9 @@ function Home() {
             <div className="news-card">
               <div className="news-image">
                 <img
-  src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=900&q=80"
-  alt="Students participating in science quiz"
-/>
+                  src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=900&q=80"
+                  alt="Students participating in science quiz"
+                />
               </div>
               <div className="news-content">
                 <h3>Our School Wins District-Level Science Quiz Competition</h3>
@@ -642,9 +620,9 @@ function Home() {
             <div className="news-card">
               <div className="news-image">
                 <img
-  src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=900&q=80"
-  alt="Tree plantation drive at school"
-/>
+                  src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=900&q=80"
+                  alt="Tree plantation drive at school"
+                />
               </div>
               <div className="news-content">
                 <h3>School Organizes Tree Plantation Drive on Campus</h3>
@@ -674,10 +652,10 @@ function Home() {
           <div className="events-grid">
             <div className="event-card">
               <div className="event-image">
-               <img
-  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80"
-  alt="Art Exhibition at School"
-/>
+                <img
+                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80"
+                  alt="Art Exhibition at School"
+                />
               </div>
               <div className="event-content">
                 <h3>Art Exhibition and Auction</h3>
@@ -698,9 +676,9 @@ function Home() {
             <div className="event-card">
               <div className="event-image">
                 <img
-  src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
-  alt="School Sports Day"
-/>
+                  src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
+                  alt="School Sports Day"
+                />
               </div>
               <div className="event-content">
                 <h3>Sports Day Extravaganza</h3>
@@ -721,9 +699,9 @@ function Home() {
             <div className="event-card">
               <div className="event-image">
                 <img
-  src="https://images.unsplash.com/photo-1515169067865-5387ec356754?auto=format&fit=crop&w=900&q=80"
-  alt="School Talent Show Performance"
-/>
+                  src="https://images.unsplash.com/photo-1515169067865-5387ec356754?auto=format&fit=crop&w=900&q=80"
+                  alt="School Talent Show Performance"
+                />
               </div>
               <div className="event-content">
                 <h3>School Talent Show</h3>
@@ -784,7 +762,7 @@ function Home() {
         <div className="container">
           <div className="space-block">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block4.webp"
+              src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80"
               alt="Learning Spaces"
             />
             <div className="space-content">
@@ -802,7 +780,7 @@ function Home() {
 
           <div className="space-block reverse">
             <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block5.webp"
+              src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80"
               alt="Beyond Classroom"
             />
             <div className="space-content">
@@ -822,33 +800,33 @@ function Home() {
 
       {/* Statistics */}
       <section className="statistics">
-  <div className="container">
-    <h2>Key Statistics</h2>
-    <p className="subtitle">Numbers that Matter</p>
+        <div className="container">
+          <h2>Key Statistics</h2>
+          <p className="subtitle">Numbers that Matter</p>
 
-    <div className="stats-grid">
-      <div className="stat-item">
-        <AnimatedCounter end={2500} suffix="+" duration={1000} />
-        <p>Students</p>
-      </div>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <AnimatedCounter end={2500} suffix="+" duration={1000} />
+              <p>Students</p>
+            </div>
 
-      <div className="stat-item">
-        <AnimatedCounter end={150} suffix="+" duration={1000} />
-        <p>Employees</p>
-      </div>
+            <div className="stat-item">
+              <AnimatedCounter end={150} suffix="+" duration={1000} />
+              <p>Employees</p>
+            </div>
 
-      <div className="stat-item">
-        <AnimatedCounter end={12} duration={1000} />
-        <p>Departments</p>
-      </div>
+            <div className="stat-item">
+              <AnimatedCounter end={12} duration={1000} />
+              <p>Departments</p>
+            </div>
 
-      <div className="stat-item">
-        <AnimatedCounter end={50} suffix="+" duration={1000} />
-        <p>Classes</p>
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="stat-item">
+              <AnimatedCounter end={50} suffix="+" duration={1000} />
+              <p>Classes</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Gallery Section */}
       <section className="gallery-section" id="gallery">
@@ -890,11 +868,11 @@ function Home() {
             <div className="gallery-card">
               <div className="gallery-image">
                 <div className="blog-image">
-  <img
-    src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
-    alt="Technology in Classroom"
-  />
-</div>
+                  <img
+                    src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
+                    alt="Technology in Classroom"
+                  />
+                </div>
               </div>
               <div className="gallery-content">
                 <h3>Graduation Ceremony</h3>
@@ -919,9 +897,9 @@ function Home() {
             <div className="blog-card">
               <div className="blog-image">
                 <img
-  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
-  alt="Technology in Classroom"
-/>
+                  src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1200&q=80"
+                  alt="Technology in Classroom"
+                />
               </div>
               <div className="blog-content">
                 <h3>
@@ -943,10 +921,10 @@ function Home() {
 
             <div className="blog-card">
               <div className="blog-image">
-               <img
-  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80"
-  alt="School Extracurricular Activities"
-/>
+                <img
+                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f"
+                  alt="School Extracurricular Activities"
+                />
               </div>
               <div className="blog-content">
                 <h3>
@@ -969,9 +947,9 @@ function Home() {
             <div className="blog-card">
               <div className="blog-image">
                 <img
-  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
-  alt="Positive School Culture"
-/>
+                  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+                  alt="Positive School Culture"
+                />
               </div>
               <div className="blog-content">
                 <h3>
@@ -998,7 +976,7 @@ function Home() {
         <div className="container">
           <h3>A Legacy of Excellence</h3>
           <p>
-            Mint International School has a proud tradition of academic
+             Revere Tech School has a proud tradition of academic
             excellence, nurturing young minds to achieve their dreams. Our
             innovative approach combines rigorous academics with a supportive
             environment, empowering students to excel in their chosen fields.
@@ -1012,15 +990,11 @@ function Home() {
       <section className="global-citizens">
         <div className="container">
           <div className="citizen-block">
-            <img
-              src="https://demo.instikit.com/storage/site/block/assets/cover/block6.webp"
-              alt="Global Citizens"
-            />
             <div className="citizen-content">
               <h2>Nurturing Global Citizens</h2>
               <h3>Values for a Better Tomorrow</h3>
               <p>
-                At Mint International School, we instill values that go beyond
+                At  Revere Tech School, we instill values that go beyond
                 academics. Our focus on empathy, respect, and environmental
                 responsibility prepares students to make meaningful
                 contributions to society. Through cultural exchange programs,
@@ -1036,9 +1010,9 @@ function Home() {
       {/* CTA Section
       <section className="cta-section">
         <div className="container">
-          <h2>Join the Mint School Community</h2>
+          <h2>Join the  Revere Tech School Community</h2>
           <p>
-            Join the Mint School Community where learning meets excellence and
+            Join the  Revere Tech School Community where learning meets excellence and
             be part of the change.
           </p>
           <a href="#apply" className="cta-btn">

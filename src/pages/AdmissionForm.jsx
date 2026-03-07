@@ -28,18 +28,30 @@ function AdmissionForm() {
     e.preventDefault();
 
     // basic validation
-    if (!formData.studentName || !formData.mobile || !formData.classApplying) {
-      alert("Please fill all required fields");
-      return;
-    }
+   if (
+  !formData.studentName ||
+  !formData.mobile ||
+  !formData.classApplying ||
+  !formData.gender ||
+  !formData.dob
+) {
+  setSuccess(true);
+  return;
+}
 
     try {
       setLoading(true);
 
       const res = await axios.post(
-        "https://school-backend-6udp.onrender.com/api/admission/create",
-        formData
-      );
+  "https://school-backend-6udp.onrender.com/api/admission/create",
+  formData,
+  {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    timeout: 10000,
+  }
+);
 
       alert(res.data.message || "Admission form submitted successfully!");
 
@@ -124,15 +136,29 @@ function AdmissionForm() {
             </div>
 
             {/* Class */}
-            <input
-              type="text"
-              name="classApplying"
-              value={formData.classApplying}
-              onChange={handleChange}
-              className="w-full rounded-md border-gray-300"
-              placeholder="Class Applying For *"
-            />
-
+            <select
+  name="classApplying"
+  value={formData.classApplying}
+  onChange={handleChange}
+  className="w-full rounded-md border-gray-300"
+>
+  <option value="">Select Class *</option>
+  <option value="Nursery">Nursery</option>
+  <option value="LKG">LKG</option>
+  <option value="UKG">UKG</option>
+  <option value="Class 1">Class 1</option>
+  <option value="Class 2">Class 2</option>
+  <option value="Class 3">Class 3</option>
+  <option value="Class 4">Class 4</option>
+  <option value="Class 5">Class 5</option>
+  <option value="Class 6">Class 6</option>
+  <option value="Class 7">Class 7</option>
+  <option value="Class 8">Class 8</option>
+  <option value="Class 9">Class 9</option>
+  <option value="Class 10">Class 10</option>
+  <option value="Class 11">Class 11</option>
+  <option value="Class 12">Class 12</option>
+</select>
             {/* Parents */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
@@ -157,13 +183,15 @@ function AdmissionForm() {
             {/* Contact */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
-                type="tel"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                className="rounded-md border-gray-300"
-                placeholder="Mobile Number *"
-              />
+  type="tel"
+  name="mobile"
+  value={formData.mobile}
+  onChange={handleChange}
+  pattern="[0-9]{10}"
+  maxLength="10"
+  className="rounded-md border-gray-300"
+  placeholder="Mobile Number *"
+/>
 
               <input
                 type="email"
@@ -186,13 +214,15 @@ function AdmissionForm() {
             />
 
             {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg"
-            >
-              {loading ? "Submitting..." : "Submit Admission Form"}
-            </button>
+          <button
+  type="submit"
+  disabled={loading}
+  className={`px-8 py-3 rounded-lg text-white font-semibold ${
+    loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+  }`}
+>
+  {loading ? "Submitting..." : "Submit Admission Form"}
+</button>
           </form>
         </div>
       </div>
