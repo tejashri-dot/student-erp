@@ -266,6 +266,7 @@ export default function StaffList() {
   const [open, setOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -318,6 +319,7 @@ export default function StaffList() {
     setOpen(false);
     setEditingStaff(null);
     setErrorMsg("");
+    setSuccessMsg("");
   };
 
   /* ================= SAVE STAFF ================= */
@@ -327,17 +329,26 @@ export default function StaffList() {
     setLoading(true);
 
     try {
+      // Use localhost for both - make it consistent
+      const apiUrl = "http://localhost:8080/api/staff";
+      
       if (editingStaff) {
-        await axios.put(`https://school-backend-6udp.onrender.com/api/staff/${editingStaff._id}`, formData);
+        await axios.put(`${apiUrl}/${editingStaff._id}`, formData);
       } else {
-        await axios.post("https://school-backend-6udp.onrender.com/api/staff", formData);
+        await axios.post(apiUrl, formData);
       }
 
-      fetchStaff();
-      handleClose();
+      // Show success message
+      setSuccessMsg(editingStaff ? "Staff updated successfully!" : "Staff added successfully!");
+      
+      // Refresh list and close modal after a short delay
+      setTimeout(() => {
+        fetchStaff();
+        handleClose();
+      }, 1000);
     } catch (error) {
       if (error.response) {
-        // ✅ Handle known backend errors
+        // Handle known backend errors
         if (error.response.status === 409) {
           setErrorMsg(error.response.data.message);
         } else if (error.response.status === 400) {
@@ -346,7 +357,7 @@ export default function StaffList() {
           setErrorMsg("Something went wrong. Please try again.");
         }
       } else {
-        setErrorMsg("Server not reachable");
+        setErrorMsg("Server not reachable. Make sure backend is running on port 8080.");
       }
     } finally {
       setLoading(false);
@@ -358,7 +369,7 @@ export default function StaffList() {
     if (!window.confirm("Are you sure you want to delete this staff member?")) return;
 
     try {
-      await axios.delete(`https://school-backend-6udp.onrender.com/api/staff/${id}`);
+      await axios.delete(`http://localhost:8080/api/staff/${id}`);
       fetchStaff();
     } catch (error) {
       console.error("Error deleting staff:", error);
@@ -440,6 +451,11 @@ export default function StaffList() {
               {errorMsg && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                   {errorMsg}
+                </Alert>
+              )}
+              {successMsg && (
+                <Alert severity="success" sx={{ mb: 2 }}>
+                  {successMsg}
                 </Alert>
               )}
 

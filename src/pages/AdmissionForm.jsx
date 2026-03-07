@@ -35,7 +35,7 @@ function AdmissionForm() {
   !formData.gender ||
   !formData.dob
 ) {
-  setSuccess(true);
+ alert("Please fill all required fields");
   return;
 }
 
@@ -127,12 +127,12 @@ function AdmissionForm() {
               </select>
 
               <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                className="rounded-md border-gray-300"
-              />
+  type="date"
+  name="dob"
+  value={formData.dob}
+  onChange={handleChange}
+  className="dob-input"
+/>
             </div>
 
             {/* Class */}
