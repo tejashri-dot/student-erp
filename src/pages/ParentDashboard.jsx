@@ -17,7 +17,7 @@ import {
   Person,
 } from "@mui/icons-material";
 
-const API_URL = "https://school-backend-6udp.onrender.com";
+const API_URL = "https://localhost:8080";
 
 function ParentDashboard() {
   const navigate = useNavigate();
