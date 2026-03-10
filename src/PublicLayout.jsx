@@ -304,7 +304,7 @@ const PublicLayout = ({ children }) => {
             <div className="quick-links">
               <Link to="/fee-payment">Online Fee Payment</Link>
               <span className="divider">|</span>
-              <Link to="/online-registration">Online Registration</Link>
+              {/* <Link to="/online-registration">Online Registration</Link> */}
             </div>
           </div>
         </div>
@@ -454,7 +454,7 @@ const PublicLayout = ({ children }) => {
             </ul>
 
             <Link to="/login" className="login-btn">
-              Login
+              Login/Registration
             </Link>
           </div>
         </div>

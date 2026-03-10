@@ -336,8 +336,6 @@
 //   );
 // }
 
-
-
 import React, { useState } from "react";
 import {
   Container,
@@ -362,14 +360,12 @@ import {
   AdminPanelSettings,
   People,
 } from "@mui/icons-material";
-import { useNavigate,useLocation } from "react-router-dom";
-import axios from 'axios';
-
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  
 
   const [roleTab, setRoleTab] = useState(3);
   const [formType, setFormType] = useState(0);
@@ -396,15 +392,23 @@ export default function Login() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://school-backend-6udp.onrender.com/api/auth/login", {
-        ...loginData,
-        role,
-      });
+      const res = await axios.post(
+        "https://school-backend-6udp.onrender.com/api/auth/login",
+        {
+          ...loginData,
+          role,
+        },
+      );
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/dashboard");
+      // Redirect based on user role
+      if (res.data.user.role === "parent") {
+        navigate("/parent");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
@@ -417,10 +421,13 @@ export default function Login() {
       return alert("Passwords do not match");
 
     try {
-      await axios.post("https://school-backend-6udp.onrender.com/api/auth/register", {
-        ...registerData,
-        role,
-      });
+      await axios.post(
+        "https://school-backend-6udp.onrender.com/api/auth/register",
+        {
+          ...registerData,
+          role,
+        },
+      );
 
       alert("Registration successful");
       setFormType(0);
@@ -458,22 +465,47 @@ export default function Login() {
 
           {formType === 0 ? (
             <form onSubmit={handleLoginSubmit}>
-              <TextField fullWidth label="Email" margin="normal"
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                InputProps={{ startAdornment: <InputAdornment position="start"><Email /></InputAdornment> }}
+              <TextField
+                fullWidth
+                label="Email"
+                margin="normal"
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               {role === "student" && (
-                <TextField fullWidth label="Roll Number" margin="normal"
-                  onChange={(e) => setLoginData({ ...loginData, rollNumber: e.target.value })}
+                <TextField
+                  fullWidth
+                  label="Roll Number"
+                  margin="normal"
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, rollNumber: e.target.value })
+                  }
                 />
               )}
 
-              <TextField fullWidth label="Password" margin="normal"
+              <TextField
+                fullWidth
+                label="Password"
+                margin="normal"
                 type={showPassword ? "text" : "password"}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
                 InputProps={{
-                  startAdornment: <InputAdornment position="start"><Lock /></InputAdornment>,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  ),
                   endAdornment: (
                     <IconButton onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -488,20 +520,50 @@ export default function Login() {
             </form>
           ) : (
             <form onSubmit={handleRegisterSubmit}>
-              <TextField fullWidth label="Full Name" margin="normal"
-                onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
+              <TextField
+                fullWidth
+                label="Full Name"
+                margin="normal"
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, name: e.target.value })
+                }
               />
-              <TextField fullWidth label="Email" margin="normal"
-                onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+              <TextField
+                fullWidth
+                label="Email"
+                margin="normal"
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, email: e.target.value })
+                }
               />
-              <TextField fullWidth label="Contact" margin="normal"
-                onChange={(e) => setRegisterData({ ...registerData, contact: e.target.value })}
+              <TextField
+                fullWidth
+                label="Contact"
+                margin="normal"
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, contact: e.target.value })
+                }
               />
-              <TextField fullWidth label="Password" type="password" margin="normal"
-                onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                margin="normal"
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, password: e.target.value })
+                }
               />
-              <TextField fullWidth label="Confirm Password" type="password" margin="normal"
-                onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
+              <TextField
+                fullWidth
+                label="Confirm Password"
+                type="password"
+                margin="normal"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    confirmPassword: e.target.value,
+                  })
+                }
               />
 
               <Button fullWidth type="submit" sx={{ mt: 2 }}>

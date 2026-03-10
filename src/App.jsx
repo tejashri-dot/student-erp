@@ -36,7 +36,6 @@
 // import FeePayment from "./pages/FeePayment";
 // import OnlineRegistration from "./pages/OnlineRegistration";
 
-
 // function App() {
 //   const { user } = useAuth();
 
@@ -262,10 +261,6 @@
 
 // export default App;
 
-
-
-
-
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
@@ -303,12 +298,18 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import StudentList from "./StudentList";
 import StaffList from "./StaffList";
+import ParentList from "./pages/Home/ParentList.jsx";
 import FeePayment from "./pages/FeePayment";
 import OnlineRegistration from "./pages/OnlineRegistration";
 import AttendanceHome from "./pages/Attendance/AttendanceHome";
 import StudentAttendance from "./pages/Attendance/StudentAttendance";
 import StaffAttendance from "./pages/Attendance/StaffAttendance";
 
+/* PARENT PORTAL */
+import ParentDashboard from "./pages/ParentDashboard";
+import ParentAttendance from "./pages/ParentAttendance";
+// import ExamScores from "./pages/ExamScores";
+// import FeeHistory from "./pages/FeeHistory";
 
 function App() {
   const { user } = useAuth();
@@ -361,24 +362,129 @@ function App() {
         }
       />
 
-      <Route path="/academic/program" element={<PublicRoute><AcademicProgram /></PublicRoute>} />
-      <Route path="/academic/curriculum" element={<PublicRoute><Curriculum /></PublicRoute>} />
-      <Route path="/academic/events" element={<PublicRoute><AcademicEvents /></PublicRoute>} />
-      <Route path="/academic/announcements" element={<PublicRoute><Announcements /></PublicRoute>} />
-      <Route path="/academic/rules-regulations" element={<PublicRoute><RulesRegulations /></PublicRoute>} />
+      <Route
+        path="/academic/program"
+        element={
+          <PublicRoute>
+            <AcademicProgram />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/academic/curriculum"
+        element={
+          <PublicRoute>
+            <Curriculum />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/academic/events"
+        element={
+          <PublicRoute>
+            <AcademicEvents />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/academic/announcements"
+        element={
+          <PublicRoute>
+            <Announcements />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/academic/rules-regulations"
+        element={
+          <PublicRoute>
+            <RulesRegulations />
+          </PublicRoute>
+        }
+      />
 
-      <Route path="/admission/procedure" element={<PublicRoute><AdmissionProcedure /></PublicRoute>} />
-      <Route path="/admission/form" element={<PublicRoute><AdmissionForm /></PublicRoute>} />
-      <Route path="/admission/fee-structure" element={<PublicRoute><FeeStructure /></PublicRoute>} />
+      <Route
+        path="/admission/procedure"
+        element={
+          <PublicRoute>
+            <AdmissionProcedure />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/admission/form"
+        element={
+          <PublicRoute>
+            <AdmissionForm />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/admission/fee-structure"
+        element={
+          <PublicRoute>
+            <FeeStructure />
+          </PublicRoute>
+        }
+      />
 
-      <Route path="/facilities/transport" element={<PublicRoute><Transport /></PublicRoute>} />
-      <Route path="/facilities/library" element={<PublicRoute><Library /></PublicRoute>} />
-      <Route path="/facilities/sports" element={<PublicRoute><Sports /></PublicRoute>} />
+      <Route
+        path="/facilities/transport"
+        element={
+          <PublicRoute>
+            <Transport />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/facilities/library"
+        element={
+          <PublicRoute>
+            <Library />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/facilities/sports"
+        element={
+          <PublicRoute>
+            <Sports />
+          </PublicRoute>
+        }
+      />
 
-      <Route path="/news" element={<PublicRoute><News /></PublicRoute>} />
-      <Route path="/gallery" element={<PublicRoute><Gallery /></PublicRoute>} />
-      <Route path="/blog" element={<PublicRoute><Blog /></PublicRoute>} />
-      <Route path="/contact" element={<PublicRoute><Contact /></PublicRoute>} />
+      <Route
+        path="/news"
+        element={
+          <PublicRoute>
+            <News />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/gallery"
+        element={
+          <PublicRoute>
+            <Gallery />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/blog"
+        element={
+          <PublicRoute>
+            <Blog />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/contact"
+        element={
+          <PublicRoute>
+            <Contact />
+          </PublicRoute>
+        }
+      />
 
       {/* AUTH */}
       <Route path="/login" element={<Login />} />
@@ -398,7 +504,6 @@ function App() {
           </PublicRoute>
         }
       />
-
 
       {/* ADMIN */}
       <Route
@@ -426,32 +531,58 @@ function App() {
         }
       />
       <Route
-  path="/attendance"
-  element={
-    <AdminRoute>
-      <AttendanceHome />
-    </AdminRoute>
-  }
-/>
+        path="/parents"
+        element={
+          <AdminRoute>
+            <ParentList />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/attendance"
+        element={
+          <AdminRoute>
+            <AttendanceHome />
+          </AdminRoute>
+        }
+      />
 
-<Route
-  path="/attendance/students"
-  element={
-    <AdminRoute>
-      <StudentAttendance />
-    </AdminRoute>
-  }
-/>
+      <Route
+        path="/attendance/students"
+        element={
+          <AdminRoute>
+            <StudentAttendance />
+          </AdminRoute>
+        }
+      />
 
-<Route
-  path="/attendance/staff"
-  element={
-    <AdminRoute>
-      <StaffAttendance />
-    </AdminRoute>
-  }
-/>
+      <Route
+        path="/attendance/staff"
+        element={
+          <AdminRoute>
+            <StaffAttendance />
+          </AdminRoute>
+        }
+      />
 
+      {/* PARENT PORTAL */}
+      <Route
+        path="/parent"
+        element={
+          <AdminRoute>
+            <ParentDashboard />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/parent/attendance"
+        element={
+          <AdminRoute>
+            <ParentAttendance />
+          </AdminRoute>
+        }
+      />
+      
     </Routes>
   );
 }

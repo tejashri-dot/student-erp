@@ -25,6 +25,9 @@ import {
   Payment,
   ExitToApp,
   AccountCircle,
+  CalendarToday,
+  Assignment,
+  SupervisorAccount,
 } from "@mui/icons-material";
 import { useAuth } from "./AuthContext";
 
@@ -60,10 +63,22 @@ export default function Layout({ children }) {
       ? [
           { text: "Students", icon: <School />, path: "/students" },
           { text: "Staff", icon: <People />, path: "/staff" },
+          { text: "Parents", icon: <SupervisorAccount />, path: "/parents" },
         ]
       : []),
     ...(user?.role === "company_admin"
       ? [{ text: "Branches", icon: <Business />, path: "/branches" }]
+      : []),
+    ...(user?.role === "parent"
+      ? [
+          {
+            text: "Attendance",
+            icon: <CalendarToday />,
+            path: "/parent/attendance",
+          },
+          { text: "Exam Scores", icon: <Assignment />, path: "/parent/exams" },
+          { text: "Fee History", icon: <Payment />, path: "/parent/fees" },
+        ]
       : []),
     ...(user?.role === "student" || user?.role === "parent"
       ? [{ text: "My Profile", icon: <AccountCircle />, path: "/profile" }]
