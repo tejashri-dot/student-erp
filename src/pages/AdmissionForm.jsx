@@ -113,7 +113,7 @@ function AdmissionForm() {
             </div>
 
             {/* Gender & DOB */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid">
               <select
                 name="gender"
                 value={formData.gender}
@@ -230,4 +230,4 @@ function AdmissionForm() {
   );
 }
 
-export default AdmissionForm;
+export default AdmissionForm; 

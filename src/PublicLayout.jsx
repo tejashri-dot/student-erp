@@ -31,15 +31,15 @@ const PublicLayout = ({ children }) => {
         }
 
         /* ===== Announcement Bar ===== */
-        .announcement-bar {
-          position: fixed;
-          top: 0;
-          width: 100%;
-          background: #0a7c5c;
-          color: #fff;
-          overflow: hidden;
-          z-index: 2000;
-        }
+       .announcement-bar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #0a7c5c;
+  color: #fff;
+  overflow: hidden;
+  z-index: 2000;
+}
 
         .announcement-scroll {
           display: flex;
@@ -61,14 +61,18 @@ const PublicLayout = ({ children }) => {
         .announcement-item {
           font-size: 14px;
         }
-
+.announcement-scroll {
+  display: inline-flex;
+  gap: 60px;
+  white-space: nowrap;
+  padding: 8px 0;
+  animation: scrollText 25s linear infinite;
+}
         /* ===== Top Header ===== */
-        .top-header {
-          margin-top: 40px;
-          background: #f5f5f5;
-          font-size: 14px;
-        }
-
+       .top-header {
+  background: #f5f5f5;
+  font-size: 14px;
+}
         .top-header-content {
           display: flex;
           justify-content: space-between;
@@ -84,7 +88,7 @@ const PublicLayout = ({ children }) => {
 
         /* ===== Navbar ===== */
         .mainNav {
-          position: sticky;
+          // position: sticky;
           top: 80px;
           background: #fff;
           border-bottom: 1px solid #ddd;

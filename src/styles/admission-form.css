@@ -1,123 +1,122 @@
-/* Page background */
+/* PAGE BACKGROUND */
 .admission-container {
-  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  background: linear-gradient(135deg, #f3f7fb, #e9f2ff);
   min-height: 100vh;
 }
 
-/* Card */
+/* FORM CARD */
 .admission-card {
   padding: 40px;
-  border-radius: 16px;
-  background: white;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-  transition: 0.3s;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
 }
 
 .admission-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* Heading */
+/* TITLE */
 .admission-card h2 {
+  text-align: center;
   font-size: 28px;
-  font-weight: 700;
-  color: #1e293b;
+  margin-bottom: 8px;
+  color: #1f2937;
 }
 
 .admission-card p {
-  font-size: 15px;
-  color: #64748b;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #6b7280;
 }
 
-/* Labels */
-.admission-card label {
-  font-weight: 600;
-  color: #334155;
+/* FORM LAYOUT */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-/* Inputs */
-.admission-card input,
-.admission-card select,
-.admission-card textarea {
+/* GRID FOR TWO COLUMNS */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* INPUTS */
+input,
+select,
+textarea {
   width: 100%;
   padding: 12px 14px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #d1d5db;
   font-size: 14px;
-  transition: 0.25s;
+  transition: all 0.2s ease;
   background: #fff;
 }
 
-/* Focus effect */
-.admission-card input:focus,
-.admission-card select:focus,
-.admission-card textarea:focus {
+/* INPUT FOCUS */
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-/* Select dropdown arrow styling */
-.admission-card select {
-  cursor: pointer;
+/* LABEL */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
 }
 
-/* Date input calendar closer */
-.admission-card input[type="date"] {
-  padding-right: 10px;
+/* DATE INPUT */
+.dob-input {
+  padding: 12px;
 }
 
-/* Reduce calendar icon distance */
-.admission-card input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(0.4);
-  margin-right: 4px;
-}
-
-/* Grid spacing */
-.grid {
-  margin-top: 5px;
-}
-
-/* Textarea */
-.admission-card textarea {
+/* TEXTAREA */
+textarea {
   resize: none;
 }
 
-/* Button */
-.admission-card button {
-  margin-top: 10px;
-  padding: 14px 30px;
-  border-radius: 10px;
+/* SUBMIT BUTTON */
+button[type="submit"] {
+  margin-top: 15px;
+  padding: 14px;
   border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
   font-size: 16px;
   font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg,#2563eb,#1e40af);
-  transition: 0.25s;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-.admission-card button:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg,#1e40af,#1d4ed8);
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #1e40af, #1e3a8a);
+  transform: translateY(-1px);
 }
 
-/* Disabled button */
-.admission-card button:disabled {
+button[type="submit"]:disabled {
   background: #9ca3af;
   cursor: not-allowed;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-
-  .admission-card{
+/* MOBILE SPACING */
+@media (max-width: 640px) {
+  .admission-card {
     padding: 25px;
   }
-
-  .admission-card h2{
-    font-size:22px;
-  }
-
 }
