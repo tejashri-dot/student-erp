@@ -308,6 +308,8 @@ import StaffAttendance from "./pages/Attendance/StaffAttendance";
 /* PARENT PORTAL */
 import ParentDashboard from "./pages/ParentDashboard";
 import ParentAttendance from "./pages/ParentAttendance";
+import StudentProfile from "./pages/StudentProfile.jsx";
+import StudentSearch from "./pages/StudentSearch.jsx";
 // import ExamScores from "./pages/ExamScores";
 // import FeeHistory from "./pages/FeeHistory";
 
@@ -582,7 +584,9 @@ function App() {
           </AdminRoute>
         }
       />
-      
+
+       <Route path="/students" element={<StudentSearch />} />
+        <Route path="/student/:id" element={<StudentProfile />} />
     </Routes>
   );
 }

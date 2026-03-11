@@ -9,264 +9,382 @@ import {
   Button,
   Divider,
   CircularProgress,
+  Avatar,
+  Alert
 } from "@mui/material";
 import {
   FactCheck,
   Assessment,
   Payment,
-  Person,
+  Person
 } from "@mui/icons-material";
 
 const API_URL = "https://school-backend-6udp.onrender.com";
 
 function ParentDashboard() {
+
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [studentData, setStudentData] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [feeData, setFeeData] = useState(null);
+  const [examData, setExamData] = useState(null);
+
+  const [error, setError] = useState("");
 
   useEffect(() => {
+
     const userData = localStorage.getItem("user");
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      fetchParentData(parsedUser.id);
-    } else {
+
+    if (!userData) {
       navigate("/login");
+      return;
     }
-  }, [navigate]);
+
+    const parsedUser = JSON.parse(userData);
+    setUser(parsedUser);
+
+    fetchParentData(parsedUser.id);
+
+  }, []);
 
   const fetchParentData = async (parentId) => {
+
     try {
+
       setLoading(true);
-      
-      // Fetch attendance data
+
+      const token = localStorage.getItem("token");
+
+      /* ---------------- Attendance ---------------- */
+
       const attRes = await fetch(
         `${API_URL}/api/attendance/parent/${parentId}`,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${token}` }
         }
       );
+
       const attData = await attRes.json();
-      if (attData.success !== false) {
+      console.log("Attendance Data:", attData);
+
+      if (attData && attData.student) {
         setAttendanceData(attData);
+        setStudentData(attData.student);
       }
 
-      // Fetch fee data
+      /* ---------------- Fees ---------------- */
+
       const feeRes = await fetch(
         `${API_URL}/api/fees/parent/${parentId}`,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${token}` }
         }
       );
-      const feeRespData = await feeRes.json();
-      if (feeRespData.success !== false) {
-        setFeeData(feeRespData);
-        setStudentData(feeRespData.student);
+
+      const feeResp = await feeRes.json();
+      console.log("Fee Data:", feeResp);
+
+      if (feeResp) {
+        setFeeData(feeResp);
       }
 
-      // Fetch exam data
+      /* ---------------- Exams ---------------- */
+
       const examRes = await fetch(
         `${API_URL}/api/exams/parent/${parentId}`,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${token}` }
         }
       );
-      const examData = await examRes.json();
-      if (examData.success !== false) {
-        setStudentData(examData.student);
+
+      const examResp = await examRes.json();
+      console.log("Exam Data:", examResp);
+
+      if (examResp) {
+        setExamData(examResp);
       }
-    } catch (error) {
-      console.error("Error fetching parent data:", error);
+
+    } catch (err) {
+
+      console.error(err);
+      setError("Failed to load dashboard data");
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
   const menuStyles = {
     card: {
       cursor: "pointer",
-      transition: "transform 0.2s, box-shadow 0.2s",
+      transition: "0.3s",
       "&:hover": {
-        transform: "translateY(-4px)",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
-      },
-    },
+        transform: "translateY(-5px)",
+        boxShadow: "0 10px 20px rgba(0,0,0,0.15)"
+      }
+    }
   };
 
   if (loading) {
+
     return (
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "60vh",
+          minHeight: "60vh"
         }}
       >
         <CircularProgress />
       </Box>
     );
+
   }
 
   return (
+
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
-        Welcome, {user?.name || "Parent"}!
+
+      <Typography variant="h4" sx={{ mb: 3 }}>
+        Welcome, {user?.name || "Parent"} 👋
       </Typography>
 
-      {/* Student Info Card */}
+      {error && <Alert severity="error">{error}</Alert>}
+
+      {/* ---------------- Student Profile ---------------- */}
+
       {studentData && (
-        <Card sx={{ mb: 3, bgcolor: "#f5f5f5" }}>
+
+        <Card sx={{ mb: 4, bgcolor: "#f5f5f5" }}>
+
           <CardContent>
+
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Person sx={{ fontSize: 40, color: "#1976d2" }} />
+
+              <Avatar sx={{ width: 60, height: 60 }}>
+                <Person />
+              </Avatar>
+
               <Box>
+
                 <Typography variant="h6">
-                  Student: {studentData.name}
+                  {studentData.name}
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary">
-                  Class: {studentData.className} | Seat No: {studentData.seatNumber}
+                  Class: {studentData.className}
                 </Typography>
+
+                <Typography variant="body2" color="text.secondary">
+                  Seat Number: {studentData.seatNumber}
+                </Typography>
+
               </Box>
+
             </Box>
+
           </CardContent>
+
         </Card>
+
       )}
 
-      {/* Quick Stats */}
+      {/* ---------------- Stats Cards ---------------- */}
+
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {/* Attendance Stats */}
+
+        {/* Attendance */}
+
         <Grid item xs={12} md={4}>
+
           <Card sx={menuStyles.card}>
+
             <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
                 <Box>
-                  <Typography variant="h6" color="primary">
+
+                  <Typography color="primary" variant="h6">
                     Attendance
                   </Typography>
-                  <Typography variant="h4" sx={{ my: 1 }}>
+
+                  <Typography variant="h4">
+
                     {attendanceData?.summary?.attendancePercentage || 0}%
+
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {attendanceData?.summary?.presentDays || 0} Present / {attendanceData?.summary?.totalDays || 0} Total
+
+                  <Typography variant="body2">
+
+                    {attendanceData?.summary?.presentDays || 0} /
+                    {attendanceData?.summary?.totalDays || 0} Present
+
                   </Typography>
+
                 </Box>
-              <FactCheck sx={{ fontSize: 50, color: "#4caf50", opacity: 0.7 }} />
+
+                <FactCheck sx={{ fontSize: 50, color: "#4caf50" }} />
+
               </Box>
+
             </CardContent>
+
           </Card>
+
         </Grid>
 
-        {/* Exam Stats */}
+        {/* Exams */}
+
         <Grid item xs={12} md={4}>
+
           <Card sx={menuStyles.card}>
+
             <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
                 <Box>
-                  <Typography variant="h6" color="primary">
+
+                  <Typography color="primary" variant="h6">
                     Exams
                   </Typography>
-                  <Typography variant="h4" sx={{ my: 1 }}>
-                    {feeData?.fees?.length || 0}
+
+                  <Typography variant="h4">
+                    {examData?.exams?.length || 0}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Total Exams Taken
+
+                  <Typography variant="body2">
+                    Exams Taken
                   </Typography>
+
                 </Box>
-                <Assessment sx={{ fontSize: 50, color: "#ff9800", opacity: 0.7 }} />
+
+                <Assessment sx={{ fontSize: 50, color: "#ff9800" }} />
+
               </Box>
+
             </CardContent>
+
           </Card>
+
         </Grid>
 
-        {/* Fee Stats */}
+        {/* Fees */}
+
         <Grid item xs={12} md={4}>
+
           <Card sx={menuStyles.card}>
+
             <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
                 <Box>
-                  <Typography variant="h6" color="primary">
+
+                  <Typography color="primary" variant="h6">
                     Fees
                   </Typography>
-                  <Typography variant="h4" sx={{ my: 1 }}>
+
+                  <Typography variant="h4">
                     ₹{feeData?.summary?.totalPending || 0}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+
+                  <Typography variant="body2">
                     Pending Amount
                   </Typography>
+
                 </Box>
-                <Payment sx={{ fontSize: 50, color: "#f44336", opacity: 0.7 }} />
+
+                <Payment sx={{ fontSize: 50, color: "#f44336" }} />
+
               </Box>
+
             </CardContent>
+
           </Card>
+
         </Grid>
+
       </Grid>
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ mb: 3 }} />
 
-      {/* Quick Actions */}
-      <Typography variant="h5" gutterBottom>
+      {/* ---------------- Quick Actions ---------------- */}
+
+      <Typography variant="h5" sx={{ mb: 2 }}>
         Quick Actions
       </Typography>
+
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={3}>
+
+        <Grid item xs={12} md={3}>
+
           <Button
-            variant="contained"
             fullWidth
-            size="large"
-            onClick={() => navigate("/parent/attendance")}
+            variant="contained"
             sx={{ py: 2 }}
+            onClick={() => navigate("/parent/attendance")}
           >
             View Attendance
           </Button>
+
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+
+        <Grid item xs={12} md={3}>
+
           <Button
-            variant="contained"
             fullWidth
-            size="large"
+            variant="contained"
+            sx={{ py: 2 }}
             onClick={() => navigate("/parent/exams")}
-            sx={{ py: 2 }}
           >
-            View Exam Scores
+            View Exams
           </Button>
+
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+
+        <Grid item xs={12} md={3}>
+
           <Button
-            variant="contained"
             fullWidth
-            size="large"
-            onClick={() => navigate("/parent/fees")}
+            variant="contained"
             sx={{ py: 2 }}
+            onClick={() => navigate("/parent/fees")}
           >
             View Fee History
           </Button>
+
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+
+        <Grid item xs={12} md={3}>
+
           <Button
-            variant="contained"
-            color="success"
             fullWidth
-            size="large"
-            onClick={() => navigate("/fee-payment")}
+            color="success"
+            variant="contained"
             sx={{ py: 2 }}
+            onClick={() => navigate("/fee-payment")}
           >
             Pay Fees
           </Button>
+
         </Grid>
+
       </Grid>
+
     </Box>
+
   );
+
 }
 
 export default ParentDashboard;
-
