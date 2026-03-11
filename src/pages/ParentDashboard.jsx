@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   Card,
@@ -7,384 +8,281 @@ import {
   Typography,
   Grid,
   Button,
-  Divider,
-  CircularProgress,
   Avatar,
-  Alert
+  CircularProgress,
+  LinearProgress,
+  Divider,
 } from "@mui/material";
-import {
-  FactCheck,
-  Assessment,
-  Payment,
-  Person
-} from "@mui/icons-material";
 
+import { Person, FactCheck, Assessment, Payment } from "@mui/icons-material";
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+// Use production URL for backend
 const API_URL = "https://school-backend-6udp.onrender.com";
+// For local testing, use: const API_URL = "http://localhost:5000";
 
 function ParentDashboard() {
-
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [studentData, setStudentData] = useState(null);
-  const [attendanceData, setAttendanceData] = useState(null);
-  const [feeData, setFeeData] = useState(null);
-  const [examData, setExamData] = useState(null);
-
-  const [error, setError] = useState("");
+  const [student, setStudent] = useState(null);
+  const [attendance, setAttendance] = useState(null);
+  const [exams, setExams] = useState([]);
+  const [fees, setFees] = useState([]);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    const userData = localStorage.getItem("user");
-
-    if (!userData) {
+    if (!user) {
       navigate("/login");
       return;
     }
 
-    const parsedUser = JSON.parse(userData);
-    setUser(parsedUser);
-
-    fetchParentData(parsedUser.id);
-
+    fetchDashboard(user.id);
   }, []);
 
-  const fetchParentData = async (parentId) => {
-
+  const fetchDashboard = async (parentId) => {
     try {
-
-      setLoading(true);
-
       const token = localStorage.getItem("token");
 
-      /* ---------------- Attendance ---------------- */
+      const res = await fetch(`${API_URL}/api/parent/dashboard/${parentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      const attRes = await fetch(
-        `${API_URL}/api/attendance/parent/${parentId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const data = await res.json();
 
-      const attData = await attRes.json();
-      console.log("Attendance Data:", attData);
-
-      if (attData && attData.student) {
-        setAttendanceData(attData);
-        setStudentData(attData.student);
-      }
-
-      /* ---------------- Fees ---------------- */
-
-      const feeRes = await fetch(
-        `${API_URL}/api/fees/parent/${parentId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
-      const feeResp = await feeRes.json();
-      console.log("Fee Data:", feeResp);
-
-      if (feeResp) {
-        setFeeData(feeResp);
-      }
-
-      /* ---------------- Exams ---------------- */
-
-      const examRes = await fetch(
-        `${API_URL}/api/exams/parent/${parentId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
-      const examResp = await examRes.json();
-      console.log("Exam Data:", examResp);
-
-      if (examResp) {
-        setExamData(examResp);
-      }
-
-    } catch (err) {
-
-      console.error(err);
-      setError("Failed to load dashboard data");
-
-    } finally {
+      setStudent(data.student);
+      setAttendance(data.attendanceSummary);
+      setExams(data.exams);
+      setFees(data.fees);
 
       setLoading(false);
-
-    }
-
-  };
-
-  const menuStyles = {
-    card: {
-      cursor: "pointer",
-      transition: "0.3s",
-      "&:hover": {
-        transform: "translateY(-5px)",
-        boxShadow: "0 10px 20px rgba(0,0,0,0.15)"
-      }
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
     }
   };
 
   if (loading) {
-
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "60vh"
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
         <CircularProgress />
       </Box>
     );
-
   }
 
+  const pendingFees = fees.reduce((sum, f) => {
+    return f.status === "Pending" ? sum + f.amount : sum;
+  }, 0);
+
   return (
-
-    <Box sx={{ p: 3 }}>
-
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        Welcome, {user?.name || "Parent"} 👋
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" sx={{ mb: 4 }}>
+        Parent Dashboard
       </Typography>
 
-      {error && <Alert severity="error">{error}</Alert>}
+      {/* STUDENT PROFILE */}
 
-      {/* ---------------- Student Profile ---------------- */}
-
-      {studentData && (
-
-        <Card sx={{ mb: 4, bgcolor: "#f5f5f5" }}>
-
-          <CardContent>
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-
-              <Avatar sx={{ width: 60, height: 60 }}>
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <Avatar sx={{ width: 70, height: 70 }}>
                 <Person />
               </Avatar>
+            </Grid>
 
-              <Box>
+            <Grid item>
+              <Typography variant="h6">{student?.name}</Typography>
 
-                <Typography variant="h6">
-                  {studentData.name}
-                </Typography>
+              <Typography color="text.secondary">
+                Class: {student?.className}
+              </Typography>
 
-                <Typography variant="body2" color="text.secondary">
-                  Class: {studentData.className}
-                </Typography>
+              <Typography color="text.secondary">
+                Seat No: {student?.seatNumber}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
 
-                <Typography variant="body2" color="text.secondary">
-                  Seat Number: {studentData.seatNumber}
-                </Typography>
-
-              </Box>
-
-            </Box>
-
-          </CardContent>
-
-        </Card>
-
-      )}
-
-      {/* ---------------- Stats Cards ---------------- */}
+      {/* STATS */}
 
       <Grid container spacing={3} sx={{ mb: 4 }}>
-
         {/* Attendance */}
 
         <Grid item xs={12} md={4}>
-
-          <Card sx={menuStyles.card}>
-
+          <Card>
             <CardContent>
+              <Typography variant="h6">Attendance</Typography>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="h3" sx={{ mt: 2 }}>
+                {attendance?.attendancePercentage || 0}%
+              </Typography>
 
-                <Box>
+              <LinearProgress
+                variant="determinate"
+                value={attendance?.attendancePercentage || 0}
+                sx={{ mt: 2 }}
+              />
 
-                  <Typography color="primary" variant="h6">
-                    Attendance
-                  </Typography>
-
-                  <Typography variant="h4">
-
-                    {attendanceData?.summary?.attendancePercentage || 0}%
-
-                  </Typography>
-
-                  <Typography variant="body2">
-
-                    {attendanceData?.summary?.presentDays || 0} /
-                    {attendanceData?.summary?.totalDays || 0} Present
-
-                  </Typography>
-
-                </Box>
-
-                <FactCheck sx={{ fontSize: 50, color: "#4caf50" }} />
-
-              </Box>
-
+              <Typography sx={{ mt: 1 }}>
+                {attendance?.presentDays} / {attendance?.totalDays} Days
+              </Typography>
             </CardContent>
-
           </Card>
-
         </Grid>
 
         {/* Exams */}
 
         <Grid item xs={12} md={4}>
-
-          <Card sx={menuStyles.card}>
-
+          <Card>
             <CardContent>
+              <Typography variant="h6">Exams Taken</Typography>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-
-                <Box>
-
-                  <Typography color="primary" variant="h6">
-                    Exams
-                  </Typography>
-
-                  <Typography variant="h4">
-                    {examData?.exams?.length || 0}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    Exams Taken
-                  </Typography>
-
-                </Box>
-
-                <Assessment sx={{ fontSize: 50, color: "#ff9800" }} />
-
-              </Box>
-
+              <Typography variant="h3" sx={{ mt: 2 }}>
+                {exams.length}
+              </Typography>
             </CardContent>
-
           </Card>
-
         </Grid>
 
         {/* Fees */}
 
         <Grid item xs={12} md={4}>
-
-          <Card sx={menuStyles.card}>
-
+          <Card>
             <CardContent>
+              <Typography variant="h6">Pending Fees</Typography>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-
-                <Box>
-
-                  <Typography color="primary" variant="h6">
-                    Fees
-                  </Typography>
-
-                  <Typography variant="h4">
-                    ₹{feeData?.summary?.totalPending || 0}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    Pending Amount
-                  </Typography>
-
-                </Box>
-
-                <Payment sx={{ fontSize: 50, color: "#f44336" }} />
-
-              </Box>
-
+              <Typography variant="h3" sx={{ mt: 2 }}>
+                ₹{pendingFees}
+              </Typography>
             </CardContent>
-
           </Card>
-
         </Grid>
-
       </Grid>
+
+      {/* ATTENDANCE CHART */}
+
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Attendance Trend
+          </Typography>
+
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={attendance?.monthly || []}>
+              <XAxis dataKey="month" />
+
+              <YAxis />
+
+              <Tooltip />
+
+              <Line
+                type="monotone"
+                dataKey="percentage"
+                stroke="#1976d2"
+                strokeWidth={3}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* EXAM TABLE */}
+
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Exam Scores
+          </Typography>
+
+          {exams.map((exam) => (
+            <Box
+              key={exam._id}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                py: 1,
+              }}
+            >
+              <Typography>{exam.subject}</Typography>
+
+              <Typography>
+                {exam.marks} / {exam.maxMarks}
+              </Typography>
+            </Box>
+          ))}
+        </CardContent>
+      </Card>
 
       <Divider sx={{ mb: 3 }} />
 
-      {/* ---------------- Quick Actions ---------------- */}
+      {/* QUICK ACTIONS */}
 
-      <Typography variant="h5" sx={{ mb: 2 }}>
+      <Typography variant="h6" sx={{ mb: 2 }}>
         Quick Actions
       </Typography>
 
       <Grid container spacing={2}>
-
         <Grid item xs={12} md={3}>
-
           <Button
             fullWidth
             variant="contained"
-            sx={{ py: 2 }}
+            startIcon={<FactCheck />}
             onClick={() => navigate("/parent/attendance")}
           >
-            View Attendance
+            Attendance
           </Button>
-
         </Grid>
 
         <Grid item xs={12} md={3}>
-
           <Button
             fullWidth
             variant="contained"
-            sx={{ py: 2 }}
+            startIcon={<Assessment />}
             onClick={() => navigate("/parent/exams")}
           >
-            View Exams
+            Exams
           </Button>
-
         </Grid>
 
         <Grid item xs={12} md={3}>
-
           <Button
             fullWidth
             variant="contained"
-            sx={{ py: 2 }}
+            startIcon={<Payment />}
             onClick={() => navigate("/parent/fees")}
           >
-            View Fee History
+            Fees
           </Button>
-
         </Grid>
 
         <Grid item xs={12} md={3}>
-
           <Button
             fullWidth
-            color="success"
             variant="contained"
-            sx={{ py: 2 }}
+            color="success"
             onClick={() => navigate("/fee-payment")}
           >
             Pay Fees
           </Button>
-
         </Grid>
-
       </Grid>
-
     </Box>
-
   );
-
 }
 
 export default ParentDashboard;

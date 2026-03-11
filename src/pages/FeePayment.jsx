@@ -1,87 +1,172 @@
+import { useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
+import { Alert, CircularProgress } from "@mui/material";
+
+// Use production URL for backend
+const API_URL = "https://school-backend-6udp.onrender.com";
+// For local testing, use: const API_URL = "http://localhost:5000";
+
 function FeePayment() {
-  const styles = {
-    container: {
-      padding: "60px 20px",
-      display: "flex",
-      justifyContent: "center",
-      background: "linear-gradient(135deg, #ecfdf5, #f0fdf4)",
-      minHeight: "80vh",
-      fontFamily: "Poppins, sans-serif",
-    },
-    card: {
-      width: "100%",
-      maxWidth: "420px",
-      backgroundColor: "#ffffff",
-      padding: "35px 30px",
-      borderRadius: "14px",
-      boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-      textAlign: "center",
-    },
-    title: {
-      fontSize: "26px",
-      fontWeight: "700",
-      marginBottom: "10px",
-      color: "#064e3b",
-    },
-    subtitle: {
-      fontSize: "14px",
-      color: "#475569",
-      marginBottom: "30px",
-      lineHeight: "1.6",
-    },
-    input: {
-      width: "100%",
-      padding: "14px",
-      marginBottom: "18px",
-      borderRadius: "8px",
-      border: "1px solid #d1fae5",
-      fontSize: "14px",
-      outline: "none",
-      transition: "0.3s",
-    },
-    button: {
-      width: "100%",
-      padding: "14px",
-      background: "linear-gradient(135deg, #22c55e, #16a34a)",
-      color: "#ffffff",
-      border: "none",
-      borderRadius: "8px",
-      fontSize: "15px",
-      fontWeight: "600",
-      cursor: "pointer",
-      transition: "0.3s",
-    },
+  const [className, setClassName] = useState("");
+  const [students, setStudents] = useState([]);
+  const [studentId, setStudentId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [feeData, setFeeData] = useState(null);
+
+  /* FETCH STUDENTS */
+
+  const handleClassChange = async (e) => {
+    const value = e.target.value;
+    setClassName(value);
+
+    setStudents([]);
+    setFeeData(null);
+    setError("");
+
+    if (!value) return;
+
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/fees/students/${value}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setStudents(data);
+    } catch (err) {
+      console.error(err);
+      setError(
+        "Failed to load students. Make sure backend is running on port 5000.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* FETCH STUDENT FEES */
+
+  const handleStudentChange = async (e) => {
+    const id = e.target.value;
+    setStudentId(id);
+    setError("");
+
+    if (!id) {
+      setFeeData(null);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/fees/student/${id}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setFeeData(data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load fee data. Make sure backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Online Fee Payment</h2>
-        <p style={styles.subtitle}>
-          Please enter student details to proceed with payment.
-        </p>
+    <div style={{ padding: 40, textAlign: "center" }}>
+      <h2>Online Fee Payment</h2>
 
-        <input
-          type="text"
-          placeholder="Admission Number"
-          style={styles.input}
-        />
+      {error && (
+        <Alert severity="error" sx={{ mb: 2, maxWidth: 500, mx: "auto" }}>
+          {error}
+        </Alert>
+      )}
 
-        <input type="date" style={styles.input} />
+      {loading && <CircularProgress sx={{ mb: 2 }} />}
 
-        <button
-          style={styles.button}
-          onMouseEnter={(e) =>
-            (e.target.style.boxShadow =
-              "0 10px 25px rgba(34,197,94,0.4)")
-          }
-          onMouseLeave={(e) =>
-            (e.target.style.boxShadow = "none")
-          }
+      {/* CLASS SELECT */}
+
+      <select value={className} onChange={handleClassChange} disabled={loading}>
+        <option value="">Select Standard</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="10">10th</option>
+      </select>
+
+      <br />
+      <br />
+
+      {/* STUDENT SELECT */}
+
+      {students.length > 0 && (
+        <select
+          value={studentId}
+          onChange={handleStudentChange}
+          disabled={loading}
         >
-          Proceed to Payment
-        </button>
-      </div>
+          <option value="">Select Student</option>
+
+          {students.map((s) => (
+            <option key={s._id} value={s._id}>
+              {s.name}
+            </option>
+          ))}
+        </select>
+      )}
+
+      <br />
+      <br />
+
+      {/* FEE DATA */}
+
+      {feeData && (
+        <div
+          style={{
+            border: "1px solid #ddd",
+            padding: 20,
+            borderRadius: 10,
+            maxWidth: 350,
+            margin: "auto",
+          }}
+        >
+          <h3>Total Fees: ₹{feeData.totalFees}</h3>
+
+          <h3>Paid Fees: ₹{feeData.paidFees}</h3>
+
+          <h3 style={{ color: "red" }}>Pending Fees: ₹{feeData.pendingFees}</h3>
+
+          {feeData.pendingFees > 0 && (
+            <div style={{ marginTop: 20 }}>
+              <h4>Scan QR to Pay</h4>
+
+              <QRCodeCanvas
+                value={`upi://pay?pa=school@upi&pn=SchoolFees&am=${feeData.pendingFees}`}
+                size={200}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
