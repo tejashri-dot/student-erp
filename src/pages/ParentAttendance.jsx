@@ -19,7 +19,8 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const API_URL = "https://school-backend-6udp.onrender.com";
+// 
+const API_URL = "http://localhost:8080";
 
 function ParentAttendance() {
   const navigate = useNavigate();

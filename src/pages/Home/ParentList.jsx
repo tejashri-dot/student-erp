@@ -21,17 +21,23 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
+
 import { Add, Edit, Delete, Refresh } from "@mui/icons-material";
 
-const API_URL = "https://school-backend-6udp.onrender.com";
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8080"
+    : "https://school-backend-6udp.onrender.com";
 
 function ParentList() {
   const [parents, setParents] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [openDialog, setOpenDialog] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [selectedParent, setSelectedParent] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,6 +45,7 @@ function ParentList() {
     contact: "",
     studentId: "",
   });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -47,55 +54,65 @@ function ParentList() {
     fetchAvailableStudents();
   }, []);
 
+  // FETCH PARENTS
   const fetchParents = async () => {
     try {
       setLoading(true);
+
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${API_URL}/api/parents`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
+
       const data = await response.json();
-      setParents(data);
-    } catch (error) {
-      console.error("Error fetching parents:", error);
+
+      setParents(data.parents || data || []);
+    } catch (err) {
+      console.error(err);
       setError("Failed to fetch parents");
     } finally {
       setLoading(false);
     }
   };
 
+  // FETCH STUDENTS
   const fetchAvailableStudents = async () => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(
         `${API_URL}/api/parents/students/available`,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
+
       const data = await response.json();
-      setStudents(data);
-    } catch (error) {
-      console.error("Error fetching students:", error);
+
+      setStudents(data.students || data || []);
+    } catch (err) {
+      console.error("Students fetch error:", err);
     }
   };
 
+  // OPEN DIALOG
   const handleOpenDialog = (parent = null) => {
     if (parent) {
       setEditMode(true);
       setSelectedParent(parent);
+
       setFormData({
-        name: parent.name,
-        email: parent.email,
+        name: parent.name || "",
+        email: parent.email || "",
         password: "",
         contact: parent.contact || "",
-        studentId: parent.studentId?._id || parent.studentId || "",
+        studentId: parent.studentId?._id || "",
       });
     } else {
       setEditMode(false);
       setSelectedParent(null);
+
       setFormData({
         name: "",
         email: "",
@@ -104,6 +121,7 @@ function ParentList() {
         studentId: "",
       });
     }
+
     setError("");
     setSuccess("");
     setOpenDialog(true);
@@ -112,6 +130,7 @@ function ParentList() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedParent(null);
+
     setFormData({
       name: "",
       email: "",
@@ -119,24 +138,27 @@ function ParentList() {
       contact: "",
       studentId: "",
     });
+
     setError("");
     setSuccess("");
   };
 
+  // SUBMIT
   const handleSubmit = async () => {
     try {
       setError("");
-      setSuccess("");
 
       if (!formData.name || !formData.email || !formData.contact) {
-        setError("Name, email, and contact are required");
+        setError("Name, Email and Contact are required");
         return;
       }
 
       if (!editMode && !formData.password) {
-        setError("Password is required for new parent");
+        setError("Password required for new parent");
         return;
       }
+
+      const token = localStorage.getItem("token");
 
       const url = editMode
         ? `${API_URL}/api/parents/${selectedParent._id}`
@@ -148,7 +170,7 @@ function ParentList() {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -159,56 +181,56 @@ function ParentList() {
         throw new Error(data.message || "Operation failed");
       }
 
-      setSuccess(data.message);
+      setSuccess(data.message || "Success");
+
       fetchParents();
       fetchAvailableStudents();
 
-      setTimeout(() => {
-        handleCloseDialog();
-      }, 1500);
-    } catch (error) {
-      setError(error.message);
+      setTimeout(handleCloseDialog, 1200);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
+  // DELETE
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this parent?")) {
-      return;
-    }
+    if (!window.confirm("Delete this parent?")) return;
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${API_URL}/api/parents/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Delete failed");
+        throw new Error(data.message);
       }
 
-      setSuccess("Parent deleted successfully");
+      setSuccess("Parent deleted");
+
       fetchParents();
       fetchAvailableStudents();
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <Box sx={{ p: 3 }}>
+      {/* HEADER */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
           mb: 3,
         }}
       >
         <Typography variant="h4">Parents Management</Typography>
+
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
             variant="outlined"
@@ -220,6 +242,7 @@ function ParentList() {
           >
             Refresh
           </Button>
+
           <Button
             variant="contained"
             startIcon={<Add />}
@@ -230,20 +253,22 @@ function ParentList() {
         </Box>
       </Box>
 
+      {/* ALERTS */}
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>
+        <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
 
       {success && (
-        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess("")}>
+        <Alert severity="success" sx={{ mb: 2 }}>
           {success}
         </Alert>
       )}
 
+      {/* TABLE */}
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
           <CircularProgress />
         </Box>
       ) : (
@@ -251,141 +276,128 @@ function ParentList() {
           <Table>
             <TableHead>
               <TableRow sx={{ bgcolor: "#1976d2" }}>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                  Name
-                </TableCell>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                  Email
-                </TableCell>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                  Contact
-                </TableCell>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                  Linked Student
-                </TableCell>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                  Actions
-                </TableCell>
+                <TableCell sx={{ color: "white" }}>Name</TableCell>
+                <TableCell sx={{ color: "white" }}>Email</TableCell>
+                <TableCell sx={{ color: "white" }}>Contact</TableCell>
+                <TableCell sx={{ color: "white" }}>Student</TableCell>
+                <TableCell sx={{ color: "white" }}>Actions</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
-              {parents.length > 0 ? (
-                parents.map((parent) => (
-                  <TableRow key={parent._id} hover>
-                    <TableCell>{parent.name}</TableCell>
-                    <TableCell>{parent.email}</TableCell>
-                    <TableCell>{parent.contact}</TableCell>
-                    <TableCell>
-                      {parent.studentId ? (
-                        <Chip
-                          label={`${parent.studentId.name} (${parent.studentId.className})`}
-                          color="primary"
-                          size="small"
-                        />
-                      ) : (
-                        <Chip label="Not Linked" color="default" size="small" />
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleOpenDialog(parent)}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleDelete(parent._id)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
+              {parents.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
                     No parents found
                   </TableCell>
                 </TableRow>
               )}
+
+              {parents.map((parent) => (
+                <TableRow key={parent._id}>
+                  <TableCell>{parent.name}</TableCell>
+                  <TableCell>{parent.email}</TableCell>
+                  <TableCell>{parent.contact}</TableCell>
+
+                  <TableCell>
+                    {parent.studentId ? (
+                      <Chip
+                        label={`${parent.studentId?.name || ""} (${parent.studentId?.className || ""})`}
+                        color="primary"
+                        size="small"
+                      />
+                    ) : (
+                      <Chip label="Not Linked" size="small" />
+                    )}
+                  </TableCell>
+
+                  <TableCell>
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleOpenDialog(parent)}
+                    >
+                      <Edit />
+                    </IconButton>
+
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDelete(parent._id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
 
-      {/* Add/Edit Dialog */}
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>{editMode ? "Edit Parent" : "Add New Parent"}</DialogTitle>
+      {/* DIALOG */}
+      <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth>
+        <DialogTitle>
+          {editMode ? "Edit Parent" : "Create Parent"}
+        </DialogTitle>
+
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
-              label="Full Name"
-              fullWidth
+              label="Name"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              required
             />
+
             <TextField
               label="Email"
-              type="email"
-              fullWidth
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              required
             />
+
             <TextField
               label="Password"
               type="password"
-              fullWidth
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              placeholder={
-                editMode ? "Leave blank to keep current password" : "Required"
-              }
-              required={!editMode}
+              placeholder={editMode ? "Leave blank to keep old" : ""}
             />
+
             <TextField
-              label="Contact Number"
-              fullWidth
+              label="Contact"
               value={formData.contact}
               onChange={(e) =>
                 setFormData({ ...formData, contact: e.target.value })
               }
-              required
             />
+
             <TextField
-              label="Link Student (Optional)"
               select
-              fullWidth
+              label="Student"
               value={formData.studentId}
               onChange={(e) =>
                 setFormData({ ...formData, studentId: e.target.value })
               }
             >
-              <MenuItem value="">-- Select Student --</MenuItem>
+              <MenuItem value="">None</MenuItem>
+
               {students.map((student) => (
                 <MenuItem key={student._id} value={student._id}>
-                  {student.name} - {student.className} ({student.seatNumber})
+                  {student.name} - {student.className}
                 </MenuItem>
               ))}
             </TextField>
           </Box>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleSubmit} variant="contained">
+
+          <Button variant="contained" onClick={handleSubmit}>
             {editMode ? "Update" : "Create"}
           </Button>
         </DialogActions>

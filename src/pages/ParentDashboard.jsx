@@ -287,14 +287,6 @@
 
 // export default ParentDashboard;
 
-
-
-
-
-
-
-
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -322,8 +314,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// const API_URL =
+//   window.location.hostname === "localhost"
+//     ? "http://localhost:8080"
+//     : "https://school-backend-6udp.onrender.com";
 const API_URL = "http://localhost:8080";
-// const API_URL = "http://localhost:5000";
 
 function ParentDashboard() {
   const navigate = useNavigate();
@@ -343,7 +338,7 @@ function ParentDashboard() {
       return;
     }
 
-    fetchDashboard(user._id); // MongoDB uses _id
+    fetchDashboard(user.id); // MongoDB uses _id
   }, [navigate]);
 
   const fetchDashboard = async (parentId) => {
@@ -358,7 +353,7 @@ function ParentDashboard() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -381,8 +376,18 @@ function ParentDashboard() {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 10,
+          p: 3,
+        }}
+      >
         <CircularProgress />
+        <Typography sx={{ mt: 2 }}>Loading Dashboard...</Typography>
       </Box>
     );
   }
@@ -409,9 +414,7 @@ function ParentDashboard() {
             </Grid>
 
             <Grid item>
-              <Typography variant="h6">
-                {student?.name || "Student"}
-              </Typography>
+              <Typography variant="h6">{student?.name || "Student"}</Typography>
 
               <Typography color="text.secondary">
                 Class: {student?.className || "-"}
@@ -446,8 +449,8 @@ function ParentDashboard() {
               />
 
               <Typography sx={{ mt: 1 }}>
-                {attendance?.presentDays || 0} /{" "}
-                {attendance?.totalDays || 0} Days
+                {attendance?.presentDays || 0} / {attendance?.totalDays || 0}{" "}
+                Days
               </Typography>
             </CardContent>
           </Card>
@@ -515,9 +518,7 @@ function ParentDashboard() {
             Exam Scores
           </Typography>
 
-          {exams.length === 0 && (
-            <Typography>No exam records</Typography>
-          )}
+          {exams.length === 0 && <Typography>No exam records</Typography>}
 
           {exams.map((exam) => (
             <Box

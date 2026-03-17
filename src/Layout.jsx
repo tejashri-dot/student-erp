@@ -59,7 +59,9 @@ export default function Layout({ children }) {
 
   const menuItems = [
     { text: "Dashboard", icon: <Dashboard />, path: "/dashboard" },
-    ...(user?.role === "company_admin" || user?.role === "branch_admin"
+    ...(user?.role === "company_admin" ||
+    user?.role === "branch_admin" ||
+    user?.role === "admin"
       ? [
           { text: "Students", icon: <School />, path: "/students" },
           { text: "Staff", icon: <People />, path: "/staff" },
@@ -213,8 +215,10 @@ export default function Layout({ children }) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: { xs: 1, sm: 3 },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          overflowX: "hidden",
+          maxWidth: "100vw",
         }}
       >
         <Toolbar />

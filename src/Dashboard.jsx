@@ -301,8 +301,6 @@ export default function Dashboard() {
   const [students, setStudents] = useState([]);
   const [staff, setStaff] = useState([]);
   const [admissions, setAdmissions] = useState([]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -327,61 +325,11 @@ export default function Dashboard() {
     window.location.reload();
   };
 
-  const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
-    { text: "Students", icon: <SchoolIcon />, path: "/students" },
-    { text: "Staff", icon: <PeopleIcon />, path: "/staff" },
-    { text: "Attendance", icon: <AssessmentIcon />, path: "/attendance" },
-    { text: "Payments", icon: <AccountBalanceIcon />, path: "/payments" },
-  ];
-
   // recent 5 admissions
   const recentAdmissions = admissions.slice(0, 5);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      {/* App Bar */}
-      <AppBar position="fixed" sx={{ zIndex: (t) => t.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <IconButton color="inherit" onClick={() => setDrawerOpen(true)}>
-            <MenuIcon />
-          </IconButton>
-          <Typography sx={{ flexGrow: 1 }} variant="h6">
-            School ERP System
-          </Typography>
-          <Chip
-            avatar={
-              <Avatar>
-                <PersonIcon />
-              </Avatar>
-            }
-            label="Admin"
-            variant="outlined"
-            sx={{ color: "white", borderColor: "white" }}
-          />
-          <IconButton color="inherit" onClick={handleLogout}>
-            <ExitToAppIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      {/* Sidebar */}
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Toolbar />
-        <List sx={{ width: 240 }}>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton component={Link} to={item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-
-      {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box sx={{ flexGrow: 1 }}>
         <Toolbar />
         <Typography variant="h4" mb={4}>
           Welcome to School ERP Dashboard
@@ -460,6 +408,6 @@ export default function Dashboard() {
           </Card>
         </Box>
       </Box>
-    </Box>
+   
   );
 }
