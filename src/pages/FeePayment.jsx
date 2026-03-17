@@ -76,7 +76,7 @@ function FeePayment() {
           "Content-Type": "application/json",
         },
       });
-
+                                                  
       if (!res.ok) {
         throw new Error(`Server error: ${res.status}`);
       }
@@ -98,7 +98,7 @@ function FeePayment() {
       {error && (
         <Alert severity="error" sx={{ mb: 2, maxWidth: 500, mx: "auto" }}>
           {error}
-        </Alert>
+        </Alert>                              
       )}
 
       {loading && <CircularProgress sx={{ mb: 2 }} />}
@@ -113,7 +113,7 @@ function FeePayment() {
         <option value="10">10th</option>
       </select>
 
-      <br />
+      <br />                    
       <br />
 
       {/* STUDENT SELECT */}
