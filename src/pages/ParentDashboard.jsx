@@ -615,7 +615,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://school-backend-6udp.onrender.com";
 
 function ParentDashboard() {
   const [data, setData] = useState(null);

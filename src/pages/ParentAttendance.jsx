@@ -20,7 +20,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://school-backend-6udp.onrender.com";
 
 function ParentAttendance() {
   const navigate = useNavigate();

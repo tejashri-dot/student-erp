@@ -263,6 +263,163 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import {
+//   Box,
+//   Card,
+//   CardContent,
+//   Typography,
+//   Grid,
+//   Button,
+//   AppBar,
+//   Toolbar,
+//   IconButton,
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemButton,
+//   ListItemIcon,
+//   ListItemText,
+//   Divider,
+//   Avatar,
+//   Chip,
+// } from "@mui/material";
+// import {
+//   Menu as MenuIcon,
+//   Dashboard as DashboardIcon,
+//   People as PeopleIcon,
+//   School as SchoolIcon,
+//   AccountBalance as AccountBalanceIcon,
+//   Assessment as AssessmentIcon,
+//   ExitToApp as ExitToAppIcon,
+//   Person as PersonIcon,
+// } from "@mui/icons-material";
+// import { Link } from "react-router-dom";
+// import axios from "axios";
+
+// export default function Dashboard() {
+//   const [students, setStudents] = useState([]);
+//   const [staff, setStaff] = useState([]);
+//   const [admissions, setAdmissions] = useState([]);
+//   useEffect(() => {
+//     fetchDashboardData();
+//   }, []);
+
+//   const fetchDashboardData = async () => {
+//     try {
+//       const [studentsRes, staffRes, admissionRes] = await Promise.all([
+//         axios.get("https://school-backend-6udp.onrender.com/api/students"),
+//         axios.get("https://school-backend-6udp.onrender.com/api/staff"),
+//         axios.get("https://school-backend-6udp.onrender.com/api/admission/all"),
+//       ]);
+
+//       setStudents(studentsRes.data || []);
+//       setStaff(staffRes.data || []);
+//       setAdmissions(admissionRes.data.data || []);
+//     } catch (error) {
+//       console.error("Dashboard API Error:", error);
+//     }
+//   };
+
+//   const handleLogout = () => {
+//     window.location.reload();
+//   };
+
+//   // recent 5 admissions
+//   const recentAdmissions = admissions.slice(0, 5);
+
+//   return (
+//       <Box sx={{ flexGrow: 1 }}>
+//         <Toolbar />
+//         <Typography variant="h4" mb={4}>
+//           Welcome to School ERP Dashboard
+//         </Typography>
+
+//         {/* Top Cards */}
+//         <Grid container spacing={3}>
+//           <Grid item xs={12} md={3}>
+//             <Card>
+//               <CardContent align="center">
+//                 <SchoolIcon sx={{ fontSize: 48 }} color="primary" />
+//                 <Typography variant="h4">{students.length}</Typography>
+//                 <Typography>Total Students</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+
+//           <Grid item xs={12} md={3}>
+//             <Card>
+//               <CardContent align="center">
+//                 <PeopleIcon sx={{ fontSize: 48 }} color="secondary" />
+//                 <Typography variant="h4">{staff.length}</Typography>
+//                 <Typography>Total Staff</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+
+//           <Grid item xs={12} md={3}>
+//             <Card>
+//               <CardContent align="center">
+//                 <AssessmentIcon sx={{ fontSize: 48 }} color="success" />
+//                 <Typography variant="h4">95%</Typography>
+//                 <Typography>Attendance</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+
+//           {/* TOTAL ADMISSION */}
+//           <Grid item xs={12} md={3}>
+//             <Card>
+//               <CardContent align="center">
+//                 <AccountBalanceIcon sx={{ fontSize: 48 }} color="warning" />
+//                 <Typography variant="h4">{admissions.length}</Typography>
+//                 <Typography>Total Admissions</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//         </Grid>
+
+//         {/* Recent Admissions */}
+//         <Box sx={{ mt: 5 }}>
+//           <Typography variant="h5" gutterBottom>
+//             Recent Admissions
+//           </Typography>
+
+//           <Card>
+//             <CardContent>
+//               {recentAdmissions.length === 0 ? (
+//                 <Typography color="text.secondary">
+//                   No recent admissions found.
+//                 </Typography>
+//               ) : (
+//                 recentAdmissions.map((admission) => (
+//                   <Typography
+//                     key={admission._id}
+//                     variant="body2"
+//                     color="text.secondary"
+//                     sx={{ mb: 1 }}
+//                   >
+//                     • {admission.studentName} applied for{" "}
+//                     {admission.classApplying}
+//                   </Typography>
+//                 ))
+//               )}
+//             </CardContent>
+//           </Card>
+//         </Box>
+//       </Box>
+   
+//   );
+// }
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -270,37 +427,24 @@ import {
   CardContent,
   Typography,
   Grid,
-  Button,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
   Avatar,
   Chip,
+  CircularProgress,
 } from "@mui/material";
 import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
-  School as SchoolIcon,
-  AccountBalance as AccountBalanceIcon,
-  Assessment as AssessmentIcon,
-  ExitToApp as ExitToAppIcon,
-  Person as PersonIcon,
+  School,
+  People,
+  Assessment,
+  AccountBalance,
 } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Dashboard() {
   const [students, setStudents] = useState([]);
   const [staff, setStaff] = useState([]);
   const [admissions, setAdmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -318,96 +462,154 @@ export default function Dashboard() {
       setAdmissions(admissionRes.data.data || []);
     } catch (error) {
       console.error("Dashboard API Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    window.location.reload();
-  };
+  const cards = [
+    {
+      title: "Students",
+      value: students.length,
+      icon: <School sx={{ fontSize: 32 }} />,
+      bg: "linear-gradient(135deg, #1976d2, #42a5f5)",
+    },
+    {
+      title: "Staff",
+      value: staff.length,
+      icon: <People sx={{ fontSize: 32 }} />,
+      bg: "linear-gradient(135deg, #7b1fa2, #ba68c8)",
+    },
+    {
+      title: "Attendance",
+      value: "95%",
+      icon: <Assessment sx={{ fontSize: 32 }} />,
+      bg: "linear-gradient(135deg, #2e7d32, #66bb6a)",
+    },
+    {
+      title: "Admissions",
+      value: admissions.length,
+      icon: <AccountBalance sx={{ fontSize: 32 }} />,
+      bg: "linear-gradient(135deg, #ed6c02, #ffb74d)",
+    },
+  ];
 
-  // recent 5 admissions
   const recentAdmissions = admissions.slice(0, 5);
 
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
+        <CircularProgress size={60} />
+      </Box>
+    );
+  }
+
   return (
-      <Box sx={{ flexGrow: 1 }}>
-        <Toolbar />
-        <Typography variant="h4" mb={4}>
-          Welcome to School ERP Dashboard
+    <Box p={4} sx={{ background: "#f4f6f8", minHeight: "100vh" }}>
+      <Typography variant="h4" fontWeight="bold" mb={4}>
+        Dashboard Overview
+      </Typography>
+
+      {/* Cards */}
+      <Grid container spacing={3}>
+        {cards.map((card, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <Card
+              sx={{
+                height: 140,
+                borderRadius: 4,
+                color: "white",
+                background: card.bg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                px: 3,
+                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                transition: "0.3s",
+                '&:hover': {
+                  transform: 'translateY(-6px)',
+                },
+              }}
+            >
+              <Box>
+                <Typography variant="body1">{card.title}</Typography>
+                <Typography variant="h4" fontWeight="bold">
+                  {card.value}
+                </Typography>
+              </Box>
+
+              <Avatar
+                sx={{
+                  width: 60,
+                  height: 60,
+                  bgcolor: "rgba(255,255,255,0.2)",
+                }}
+              >
+                {card.icon}
+              </Avatar>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Recent Admissions */}
+      <Box mt={6}>
+        <Typography variant="h5" fontWeight="bold" mb={2}>
+          Recent Admissions
         </Typography>
 
-        {/* Top Cards */}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent align="center">
-                <SchoolIcon sx={{ fontSize: 48 }} color="primary" />
-                <Typography variant="h4">{students.length}</Typography>
-                <Typography>Total Students</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <Card
+          sx={{
+            borderRadius: 4,
+            boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+          }}
+        >
+          <CardContent>
+            {recentAdmissions.length === 0 ? (
+              <Typography color="text.secondary">
+                No recent admissions found.
+              </Typography>
+            ) : (
+              recentAdmissions.map((admission) => (
+                <Box
+                  key={admission._id}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={2}
+                  p={2}
+                  sx={{
+                    borderRadius: 3,
+                    background: "#fafafa",
+                    transition: "0.2s",
+                    '&:hover': {
+                      background: "#f1f1f1",
+                    },
+                  }}
+                >
+                  <Box>
+                    <Typography fontWeight="600">
+                      {admission.studentName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Class: {admission.classApplying}
+                    </Typography>
+                  </Box>
 
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent align="center">
-                <PeopleIcon sx={{ fontSize: 48 }} color="secondary" />
-                <Typography variant="h4">{staff.length}</Typography>
-                <Typography>Total Staff</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent align="center">
-                <AssessmentIcon sx={{ fontSize: 48 }} color="success" />
-                <Typography variant="h4">95%</Typography>
-                <Typography>Attendance</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* TOTAL ADMISSION */}
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent align="center">
-                <AccountBalanceIcon sx={{ fontSize: 48 }} color="warning" />
-                <Typography variant="h4">{admissions.length}</Typography>
-                <Typography>Total Admissions</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
-        {/* Recent Admissions */}
-        <Box sx={{ mt: 5 }}>
-          <Typography variant="h5" gutterBottom>
-            Recent Admissions
-          </Typography>
-
-          <Card>
-            <CardContent>
-              {recentAdmissions.length === 0 ? (
-                <Typography color="text.secondary">
-                  No recent admissions found.
-                </Typography>
-              ) : (
-                recentAdmissions.map((admission) => (
-                  <Typography
-                    key={admission._id}
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    • {admission.studentName} applied for{" "}
-                    {admission.classApplying}
-                  </Typography>
-                ))
-              )}
-            </CardContent>
-          </Card>
-        </Box>
+                  <Chip
+                    label="New"
+                    sx={{
+                      bgcolor: "#4caf50",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </Box>
+              ))
+            )}
+          </CardContent>
+        </Card>
       </Box>
-   
+    </Box>
   );
 }
