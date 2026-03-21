@@ -57,7 +57,7 @@ export default function Login() {
 
     try {
      const res = await axios.post(
-  "http://localhost:8080/api/auth/login",
+  "https://school-backend-6udp.onrender.com/api/auth/login",
   {
     email: loginData.email,
     password: loginData.password,
@@ -90,7 +90,7 @@ export default function Login() {
 
     try {
       await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "https://school-backend-6udp.onrender.com/api/auth/register",
         {
           ...registerData,
           role,
