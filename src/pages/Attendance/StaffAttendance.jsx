@@ -11,7 +11,7 @@ export default function StaffAttendance() {
   const [attendanceStatus, setAttendanceStatus] = useState({});
 
   const token = localStorage.getItem("token");
-  const API_URL = "http://localhost:8080/api";
+  const API_URL = "https://school-backend-6udp.onrender.com/api";
 
   // Fetch staff list
   useEffect(() => {

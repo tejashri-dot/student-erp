@@ -26,7 +26,7 @@ import { Add, Edit, Delete, Refresh } from "@mui/icons-material";
 
 const API_URL =
   window.location.hostname === "localhost"
-    ? "http://localhost:8080"
+    ? "https://school-backend-6udp.onrender.com"
     : "https://school-backend-6udp.onrender.com";
 
 function ParentList() {
