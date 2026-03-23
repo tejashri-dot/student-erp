@@ -259,167 +259,6 @@
 
 
 
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import {
-//   Box,
-//   Card,
-//   CardContent,
-//   Typography,
-//   Grid,
-//   Button,
-//   AppBar,
-//   Toolbar,
-//   IconButton,
-//   Drawer,
-//   List,
-//   ListItem,
-//   ListItemButton,
-//   ListItemIcon,
-//   ListItemText,
-//   Divider,
-//   Avatar,
-//   Chip,
-// } from "@mui/material";
-// import {
-//   Menu as MenuIcon,
-//   Dashboard as DashboardIcon,
-//   People as PeopleIcon,
-//   School as SchoolIcon,
-//   AccountBalance as AccountBalanceIcon,
-//   Assessment as AssessmentIcon,
-//   ExitToApp as ExitToAppIcon,
-//   Person as PersonIcon,
-// } from "@mui/icons-material";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-
-// export default function Dashboard() {
-//   const [students, setStudents] = useState([]);
-//   const [staff, setStaff] = useState([]);
-//   const [admissions, setAdmissions] = useState([]);
-//   useEffect(() => {
-//     fetchDashboardData();
-//   }, []);
-
-//   const fetchDashboardData = async () => {
-//     try {
-//       const [studentsRes, staffRes, admissionRes] = await Promise.all([
-//         axios.get("https://school-backend-6udp.onrender.com/api/students"),
-//         axios.get("https://school-backend-6udp.onrender.com/api/staff"),
-//         axios.get("https://school-backend-6udp.onrender.com/api/admission/all"),
-//       ]);
-
-//       setStudents(studentsRes.data || []);
-//       setStaff(staffRes.data || []);
-//       setAdmissions(admissionRes.data.data || []);
-//     } catch (error) {
-//       console.error("Dashboard API Error:", error);
-//     }
-//   };
-
-//   const handleLogout = () => {
-//     window.location.reload();
-//   };
-
-//   // recent 5 admissions
-//   const recentAdmissions = admissions.slice(0, 5);
-
-//   return (
-//       <Box sx={{ flexGrow: 1 }}>
-//         <Toolbar />
-//         <Typography variant="h4" mb={4}>
-//           Welcome to School ERP Dashboard
-//         </Typography>
-
-//         {/* Top Cards */}
-//         <Grid container spacing={3}>
-//           <Grid item xs={12} md={3}>
-//             <Card>
-//               <CardContent align="center">
-//                 <SchoolIcon sx={{ fontSize: 48 }} color="primary" />
-//                 <Typography variant="h4">{students.length}</Typography>
-//                 <Typography>Total Students</Typography>
-//               </CardContent>
-//             </Card>
-//           </Grid>
-
-//           <Grid item xs={12} md={3}>
-//             <Card>
-//               <CardContent align="center">
-//                 <PeopleIcon sx={{ fontSize: 48 }} color="secondary" />
-//                 <Typography variant="h4">{staff.length}</Typography>
-//                 <Typography>Total Staff</Typography>
-//               </CardContent>
-//             </Card>
-//           </Grid>
-
-//           <Grid item xs={12} md={3}>
-//             <Card>
-//               <CardContent align="center">
-//                 <AssessmentIcon sx={{ fontSize: 48 }} color="success" />
-//                 <Typography variant="h4">95%</Typography>
-//                 <Typography>Attendance</Typography>
-//               </CardContent>
-//             </Card>
-//           </Grid>
-
-//           {/* TOTAL ADMISSION */}
-//           <Grid item xs={12} md={3}>
-//             <Card>
-//               <CardContent align="center">
-//                 <AccountBalanceIcon sx={{ fontSize: 48 }} color="warning" />
-//                 <Typography variant="h4">{admissions.length}</Typography>
-//                 <Typography>Total Admissions</Typography>
-//               </CardContent>
-//             </Card>
-//           </Grid>
-//         </Grid>
-
-//         {/* Recent Admissions */}
-//         <Box sx={{ mt: 5 }}>
-//           <Typography variant="h5" gutterBottom>
-//             Recent Admissions
-//           </Typography>
-
-//           <Card>
-//             <CardContent>
-//               {recentAdmissions.length === 0 ? (
-//                 <Typography color="text.secondary">
-//                   No recent admissions found.
-//                 </Typography>
-//               ) : (
-//                 recentAdmissions.map((admission) => (
-//                   <Typography
-//                     key={admission._id}
-//                     variant="body2"
-//                     color="text.secondary"
-//                     sx={{ mb: 1 }}
-//                   >
-//                     • {admission.studentName} applied for{" "}
-//                     {admission.classApplying}
-//                   </Typography>
-//                 ))
-//               )}
-//             </CardContent>
-//           </Card>
-//         </Box>
-//       </Box>
-   
-//   );
-// }
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -427,188 +266,409 @@ import {
   CardContent,
   Typography,
   Grid,
+  Button,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
   Avatar,
   Chip,
-  CircularProgress,
+  LinearProgress,
+  Paper,
+  Stack,
+  useTheme,
+  alpha,
+  Skeleton,
 } from "@mui/material";
 import {
-  School,
-  People,
-  Assessment,
-  AccountBalance,
+  Menu as MenuIcon,
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  School as SchoolIcon,
+  AccountBalance as AccountBalanceIcon,
+  Assessment as AssessmentIcon,
+  ExitToApp as ExitToAppIcon,
+  Person as PersonIcon,
+  TrendingUp as TrendingUpIcon,
+  CalendarToday as CalendarIcon,
+  AttachMoney as MoneyIcon,
 } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { format } from "date-fns"; // For nice date formatting
 
 export default function Dashboard() {
   const [students, setStudents] = useState([]);
   const [staff, setStaff] = useState([]);
   const [admissions, setAdmissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
-    fetchDashboardData();
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [studentsRes, staffRes, admissionsRes] = await Promise.all([
+          axios.get("https://school-backend-6udp.onrender.com/api/students"),
+          axios.get("https://school-backend-6udp.onrender.com/api/staff"),
+          axios.get("https://school-backend-6udp.onrender.com/api/admission/all"),
+        ]);
+        setStudents(studentsRes.data);
+        setStaff(staffRes.data);
+        setAdmissions(admissionsRes.data.data || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
-  const fetchDashboardData = async () => {
-    try {
-      const [studentsRes, staffRes, admissionRes] = await Promise.all([
-        axios.get("https://school-backend-6udp.onrender.com/api/students"),
-        axios.get("https://school-backend-6udp.onrender.com/api/staff"),
-        axios.get("https://school-backend-6udp.onrender.com/api/admission/all"),
-      ]);
-
-      setStudents(studentsRes.data || []);
-      setStaff(staffRes.data || []);
-      setAdmissions(admissionRes.data.data || []);
-    } catch (error) {
-      console.error("Dashboard API Error:", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleLogout = () => {
+    window.location.reload(); // Replace with proper logout logic
   };
 
-  const cards = [
+  const menuItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
+    { text: "Students", icon: <SchoolIcon />, path: "/students" },
+    { text: "Staff", icon: <PeopleIcon />, path: "/staff" },
+    { text: "Attendance", icon: <AssessmentIcon />, path: "/attendance" },
+    { text: "Payments", icon: <AccountBalanceIcon />, path: "/payments" },
+  ];
+
+  // Prepare recent admissions (most recent 4 based on admissionDate)
+  const recentAdmissions = [...admissions]
+    .sort((a, b) => new Date(b.admissionDate || b.createdAt) - new Date(a.admissionDate || a.createdAt))
+    .slice(0, 4)
+    .map(admission => ({
+      id: admission._id,
+      text: `New admission: ${admission.studentName || "Student"} enrolled in ${admission.className || "class"}`,
+      date: admission.admissionDate || admission.createdAt,
+      icon: <SchoolIcon fontSize="small" />,
+    }));
+
+  // Fallback recent activities if no admissions
+  const fallbackActivities = [
+    { id: 1, text: "No recent admissions found", icon: <CalendarIcon fontSize="small" />, date: new Date() },
+  ];
+
+  const activitiesToShow = recentAdmissions.length > 0 ? recentAdmissions : fallbackActivities;
+
+  const stats = [
     {
-      title: "Students",
+      title: "Total Students",
       value: students.length,
-      icon: <School sx={{ fontSize: 32 }} />,
-      bg: "linear-gradient(135deg, #1976d2, #42a5f5)",
+      icon: <SchoolIcon sx={{ fontSize: 40 }} />,
+      color: theme.palette.primary.main,
+      bgColor: alpha(theme.palette.primary.main, 0.1),
+      link: "/students",
     },
     {
-      title: "Staff",
+      title: "Total Staff",
       value: staff.length,
-      icon: <People sx={{ fontSize: 32 }} />,
-      bg: "linear-gradient(135deg, #7b1fa2, #ba68c8)",
+      icon: <PeopleIcon sx={{ fontSize: 40 }} />,
+      color: theme.palette.secondary.main,
+      bgColor: alpha(theme.palette.secondary.main, 0.1),
+      link: "/staff",
     },
     {
-      title: "Attendance",
+      title: "Attendance Rate",
       value: "95%",
-      icon: <Assessment sx={{ fontSize: 32 }} />,
-      bg: "linear-gradient(135deg, #2e7d32, #66bb6a)",
+      icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
+      color: theme.palette.success.main,
+      bgColor: alpha(theme.palette.success.main, 0.1),
+      link: "/attendance",
     },
     {
-      title: "Admissions",
+      title: "Total Admissions",
       value: admissions.length,
-      icon: <AccountBalance sx={{ fontSize: 32 }} />,
-      bg: "linear-gradient(135deg, #ed6c02, #ffb74d)",
+      icon: <AccountBalanceIcon sx={{ fontSize: 40 }} />,
+      color: theme.palette.warning.main,
+      bgColor: alpha(theme.palette.warning.main, 0.1),
+      link: "/payments",
     },
   ];
 
-  const recentAdmissions = admissions.slice(0, 5);
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
-        <CircularProgress size={60} />
-      </Box>
-    );
-  }
-
   return (
-    <Box p={4} sx={{ background: "#f4f6f8", minHeight: "100vh" }}>
-      <Typography variant="h4" fontWeight="bold" mb={4}>
-        Dashboard Overview
-      </Typography>
+    <Box sx={{ display: "flex", bgcolor: "#f8fafc", minHeight: "100vh" }}>
+      {/* App Bar with Gradient */}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: theme.zIndex.drawer + 1,
+          background: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => setDrawerOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontWeight: 600, letterSpacing: 1 }}>
+            School ERP System
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Chip
+              avatar={
+                <Avatar sx={{ bgcolor: alpha(theme.palette.common.white, 0.2) }}>
+                  <PersonIcon />
+                </Avatar>
+              }
+              label="Admin"
+              variant="outlined"
+              sx={{ color: "white", borderColor: "white", "& .MuiChip-label": { fontWeight: 500 } }}
+            />
+            <IconButton color="inherit" onClick={handleLogout} sx={{ "&:hover": { bgcolor: alpha(theme.palette.common.white, 0.1) } }}>
+              <ExitToAppIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-      {/* Cards */}
-      <Grid container spacing={3}>
-        {cards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card
-              sx={{
-                height: 140,
-                borderRadius: 4,
-                color: "white",
-                background: card.bg,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                px: 3,
-                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-                transition: "0.3s",
-                '&:hover': {
-                  transform: 'translateY(-6px)',
-                },
-              }}
-            >
-              <Box>
-                <Typography variant="body1">{card.title}</Typography>
-                <Typography variant="h4" fontWeight="bold">
-                  {card.value}
-                </Typography>
-              </Box>
-
-              <Avatar
-                sx={{
-                  width: 60,
-                  height: 60,
-                  bgcolor: "rgba(255,255,255,0.2)",
-                }}
-              >
-                {card.icon}
-              </Avatar>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Recent Admissions */}
-      <Box mt={6}>
-        <Typography variant="h5" fontWeight="bold" mb={2}>
-          Recent Admissions
-        </Typography>
-
-        <Card
-          sx={{
-            borderRadius: 4,
-            boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
-          }}
-        >
-          <CardContent>
-            {recentAdmissions.length === 0 ? (
-              <Typography color="text.secondary">
-                No recent admissions found.
-              </Typography>
-            ) : (
-              recentAdmissions.map((admission) => (
-                <Box
-                  key={admission._id}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mb={2}
-                  p={2}
+      {/* Sidebar Drawer */}
+      <Drawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{
+          width: 260,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: 260,
+            boxSizing: "border-box",
+            borderRight: "none",
+            boxShadow: "2px 0 20px rgba(0,0,0,0.05)",
+          },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: "auto", mt: 2 }}>
+          <List>
+            {menuItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
+                  onClick={() => setDrawerOpen(false)}
                   sx={{
-                    borderRadius: 3,
-                    background: "#fafafa",
-                    transition: "0.2s",
-                    '&:hover': {
-                      background: "#f1f1f1",
+                    mx: 1,
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: alpha(theme.palette.primary.main, 0.08),
                     },
                   }}
                 >
-                  <Box>
-                    <Typography fontWeight="600">
-                      {admission.studentName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Class: {admission.classApplying}
-                    </Typography>
-                  </Box>
+                  <ListItemIcon sx={{ color: theme.palette.primary.main, minWidth: 40 }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 500 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+      </Drawer>
 
-                  <Chip
-                    label="New"
+      {/* Main Content */}
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        
+        {/* Welcome Header */}
+        <Paper
+          elevation={0}
+          sx={{
+            p: 4,
+            mb: 4,
+            borderRadius: 4,
+            background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.primary.light, 0.02)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+          }}
+        >
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
+            Welcome back, Admin! 👋
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: "80%" }}>
+            Here's what's happening with your school today. Monitor student enrollment, staff performance, and financial activities all in one place.
+          </Typography>
+        </Paper>
+
+        {/* Stats Cards Grid - Proper widths */}
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {loading
+            ? Array.from(new Array(4)).map((_, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card sx={{ height: "100%", borderRadius: 4, p: 2 }}>
+                    <Skeleton variant="circular" width={40} height={40} sx={{ mb: 2 }} />
+                    <Skeleton variant="text" width="60%" height={40} />
+                    <Skeleton variant="text" width="80%" height={30} />
+                    <Skeleton variant="rectangular" width="100%" height={36} sx={{ mt: 2, borderRadius: 2 }} />
+                  </Card>
+                </Grid>
+              ))
+            : stats.map((stat, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card
                     sx={{
-                      bgcolor: "#4caf50",
-                      color: "white",
-                      fontWeight: "bold",
+                      height: "100%",
+                      borderRadius: 4,
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                        boxShadow: theme.shadows[8],
+                      },
+                      position: "relative",
+                      overflow: "visible",
+                    }}
+                  >
+                    <CardContent sx={{ textAlign: "center", p: 3 }}>
+                      <Box
+                        sx={{
+                          display: "inline-flex",
+                          p: 1.5,
+                          borderRadius: "50%",
+                          bgcolor: stat.bgColor,
+                          color: stat.color,
+                          mb: 2,
+                        }}
+                      >
+                        {stat.icon}
+                      </Box>
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        {stat.value}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        {stat.title}
+                      </Typography>
+                      <Button
+                        component={Link}
+                        to={stat.link}
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          mt: 2,
+                          borderRadius: 2,
+                          textTransform: "none",
+                          boxShadow: "none",
+                          "&:hover": { boxShadow: "none" },
+                        }}
+                      >
+                        Manage
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+        </Grid>
+
+        {/* Attendance & Recent Activity Section */}
+        <Grid container spacing={3}>
+          {/* Attendance Overview */}
+          <Grid item xs={12} md={6}>
+            <Card sx={{ borderRadius: 4, height: "100%" }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                  Attendance Overview
+                </Typography>
+                <Box sx={{ mb: 2 }}>
+                  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                    <Typography variant="body2">Overall Attendance</Typography>
+                    <Typography variant="body2" fontWeight={500}>95%</Typography>
+                  </Box>
+                  <LinearProgress
+                    variant="determinate"
+                    value={95}
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                      bgcolor: alpha(theme.palette.success.main, 0.2),
+                      "& .MuiLinearProgress-bar": {
+                        bgcolor: theme.palette.success.main,
+                        borderRadius: 4,
+                      },
                     }}
                   />
                 </Box>
-              ))
-            )}
-          </CardContent>
-        </Card>
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                    This Month's Trend
+                  </Typography>
+                  <Stack direction="row" spacing={1} flexWrap="wrap">
+                    {["Mon", "Tue", "Wed", "Thu", "Fri"].map((day, i) => (
+                      <Chip
+                        key={day}
+                        label={`${day} ${[94, 96, 97, 95, 98][i]}%`}
+                        size="small"
+                        sx={{ bgcolor: alpha(theme.palette.success.main, 0.1), color: theme.palette.success.main }}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Recent Activity - Now showing actual admissions */}
+          <Grid item xs={12} md={6}>
+            <Card sx={{ borderRadius: 4, height: "100%" }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                  Recent Admissions
+                </Typography>
+                <List disablePadding>
+                  {activitiesToShow.map((activity) => (
+                    <ListItem key={activity.id} disablePadding sx={{ mb: 1.5 }}>
+                      <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+                        <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1), mr: 2, width: 32, height: 32 }}>
+                          {activity.icon}
+                        </Avatar>
+                        <Box sx={{ flex: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {activity.text}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {activity.date ? format(new Date(activity.date), "PPP") : "Just now"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </ListItem>
+                  ))}
+                </List>
+                {recentAdmissions.length > 0 && (
+                  <Button
+                    variant="text"
+                    fullWidth
+                    sx={{ mt: 1, textTransform: "none", borderRadius: 2 }}
+                    component={Link}
+                    to="/payments"
+                  >
+                    View All Admissions
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* Footer */}
+        <Box sx={{ mt: 5, textAlign: "center", py: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            © {new Date().getFullYear()} School ERP System. All rights reserved.
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

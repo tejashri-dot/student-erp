@@ -279,7 +279,7 @@ export default function StaffList() {
   /* ================= FETCH STAFF ================= */
   const fetchStaff = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/staff");
+      const res = await axios.get("https://school-backend-6udp.onrender.com/api/staff");
       setStaff(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Error fetching staff:", error);
