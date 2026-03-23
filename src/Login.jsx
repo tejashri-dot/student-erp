@@ -371,10 +371,16 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/login", {
-        ...loginData,
-        role,
-      });
+     const res = await axios.post(
+  "https://school-backend-6udp.onrender.com/api/auth/login",
+  {
+    email: loginData.email,
+    password: loginData.password,
+    rollNumber: loginData.rollNumber,
+    className: loginData.className,
+    role
+  }
+);
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -393,10 +399,13 @@ export default function Login() {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/register", {
-        ...registerData,
-        role,
-      });
+      await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          ...registerData,
+          role,
+        }
+      );
 
       alert("Registration successful");
       setFormType(0);

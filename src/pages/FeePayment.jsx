@@ -182,7 +182,7 @@ import { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { Alert, CircularProgress } from "@mui/material";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://school-backend-6udp.onrender.com";
 
 function FeePayment() {
   const [className, setClassName] = useState("");

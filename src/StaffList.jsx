@@ -330,7 +330,7 @@ export default function StaffList() {
 
     try {
       // Use localhost for both - make it consistent
-      const apiUrl = "http://localhost:8080/api/staff";
+      const apiUrl = "https://school-backend-6udp.onrender.com/api/staff";
       
       if (editingStaff) {
         await axios.put(`${apiUrl}/${editingStaff._id}`, formData);
@@ -369,7 +369,7 @@ export default function StaffList() {
     if (!window.confirm("Are you sure you want to delete this staff member?")) return;
 
     try {
-      await axios.delete(`http://localhost:8080/api/staff/${id}`);
+      await axios.delete(`https://school-backend-6udp.onrender.com/api/staff/${id}`);
       fetchStaff();
     } catch (error) {
       console.error("Error deleting staff:", error);
