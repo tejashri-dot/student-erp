@@ -337,6 +337,278 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import {
+//   Box,
+//   Typography,
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Paper,
+//   Button,
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogTitle,
+//   TextField,
+//   IconButton,
+//   Fab,
+//   AppBar,
+//   Toolbar,
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemButton,
+//   ListItemIcon,
+//   ListItemText,
+//   Divider,
+//   Avatar,
+//   Chip,
+//   InputAdornment,
+//   TablePagination,
+// } from "@mui/material";
+// import {
+//   Add,
+//   Edit,
+//   Delete,
+//   Menu as MenuIcon,
+//   Dashboard as DashboardIcon,
+//   People as PeopleIcon,
+//   School as SchoolIcon,
+//   AccountBalance as AccountBalanceIcon,
+//   Assessment as AssessmentIcon,
+//   ExitToApp as ExitToAppIcon,
+//   Person as PersonIcon,
+//   Search as SearchIcon,
+// } from "@mui/icons-material";
+// import { Link } from "react-router-dom";
+
+// export default function StudentList() {
+//   const [students, setStudents] = useState([]);
+//   const [open, setOpen] = useState(false);
+//   const [editing, setEditing] = useState(null);
+
+//   // ✅ MATCH BACKEND SCHEMA
+//   const [form, setForm] = useState({
+//     name: "",
+//     className: "",
+//     seatNumber: "",
+//   });
+
+//   const [drawerOpen, setDrawerOpen] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [page, setPage] = useState(0);
+//   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+//   useEffect(() => {
+//     fetchStudents();
+//   }, []);
+
+//   /* ================= FETCH ================= */
+//   const fetchStudents = async () => {
+//     try {
+//       const res = await axios.get("https://school-backend-6udp.onrender.com/api/students");
+
+//       // ✅ Backend returns ARRAY
+//       setStudents(Array.isArray(res.data) ? res.data : []);
+//     } catch (err) {
+//       console.error("Fetch students failed:", err);
+//       setStudents([]);
+//     }
+//   };
+
+//   /* ================= OPEN DIALOG ================= */
+//   const handleOpen = (student = null) => {
+//     setEditing(student);
+//     setForm(
+//       student
+//         ? {
+//             name: student.name,
+//             className: student.className,
+//             seatNumber: student.seatNumber,
+//           }
+//         : { name: "", className: "", seatNumber: "" }
+//     );
+//     setOpen(true);
+//   };
+
+//   const handleClose = () => {
+//     setOpen(false);
+//     setEditing(null);
+//   };
+
+//   /* ================= SAVE ================= */
+//   const handleSubmit = async () => {
+//     try {
+//       const payload = {
+//         name: form.name,
+//         className: form.className,
+//         seatNumber: Number(form.seatNumber), // ✅ MUST BE NUMBER
+//       };
+
+//       if (editing) {
+//         await axios.put(`https://school-backend-6udp.onrender.com/api/students/${editing._id}`, payload);
+//       } else {
+//         await axios.post("https://school-backend-6udp.onrender.com/api/students", payload);
+//       }
+
+//       fetchStudents();
+//       handleClose();
+//     } catch (err) {
+//       console.error("Save student failed:", err.response?.data || err.message);
+//       alert(err.response?.data?.message || "Something went wrong");
+//     }
+//   };
+
+//   /* ================= DELETE ================= */
+//   const handleDelete = async (id) => {
+//     try {
+//       await axios.delete(`https://school-backend-6udp.onrender.com/api/students/${id}`);
+//       fetchStudents();
+//     } catch (err) {
+//       console.error("Delete failed:", err);
+//     }
+//   };
+
+//   /* ================= FILTER ================= */
+//   const filteredStudents = students.filter(
+//     (s) =>
+//       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       s.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       String(s.seatNumber).includes(searchTerm)
+//   );
+
+//   const paginatedStudents = filteredStudents.slice(
+//     page * rowsPerPage,
+//     page * rowsPerPage + rowsPerPage
+//   );
+
+//   /* ================= UI ================= */
+//   return (
+//     <Box sx={{ display: "flex" }}>
+//       <AppBar position="fixed">
+//         <Toolbar>
+//           <IconButton color="inherit" onClick={() => setDrawerOpen(true)}>
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography sx={{ flexGrow: 1 }}>School ERP System</Typography>
+//           <Chip
+//             avatar={<Avatar><PersonIcon /></Avatar>}
+//             label="Admin"
+//             sx={{ color: "white" }}
+//           />
+//         </Toolbar>
+//       </AppBar>
+
+//       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+//         <Toolbar />
+//         <List>
+//           <ListItem disablePadding>
+//             <ListItemButton component={Link} to="/students">
+//               <ListItemIcon><SchoolIcon /></ListItemIcon>
+//               <ListItemText primary="Students" />
+//             </ListItemButton>
+//           </ListItem>
+//         </List>
+//       </Drawer>
+
+//       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+//         <Toolbar />
+
+//         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+//           <TextField
+//             placeholder="Search..."
+//             value={searchTerm}
+//             onChange={(e) => setSearchTerm(e.target.value)}
+//             InputProps={{
+//               startAdornment: (
+//                 <InputAdornment position="start">
+//                   <SearchIcon />
+//                 </InputAdornment>
+//               ),
+//             }}
+//           />
+//           <Fab color="primary" onClick={() => handleOpen()}>
+//             <Add />
+//           </Fab>
+//         </Box>
+
+//         <TableContainer component={Paper}>
+//           <Table>
+//             <TableHead>
+//               <TableRow>
+//                 <TableCell>Name</TableCell>
+//                 <TableCell>Class</TableCell>
+//                 <TableCell>Seat No</TableCell>
+//                 <TableCell>Actions</TableCell>
+//               </TableRow>
+//             </TableHead>
+//             <TableBody>
+//               {paginatedStudents.map((s) => (
+//                 <TableRow key={s._id}>
+//                   <TableCell>{s.name}</TableCell>
+//                   <TableCell>{s.className}</TableCell>
+//                   <TableCell>{s.seatNumber}</TableCell>
+//                   <TableCell>
+//                     <IconButton onClick={() => handleOpen(s)}><Edit /></IconButton>
+//                     <IconButton color="error" onClick={() => handleDelete(s._id)}><Delete /></IconButton>
+//                   </TableCell>
+//                 </TableRow>
+//               ))}
+//             </TableBody>
+//           </Table>
+
+//           <TablePagination
+//             component="div"
+//             count={filteredStudents.length}
+//             page={page}
+//             onPageChange={(e, p) => setPage(p)}
+//             rowsPerPage={rowsPerPage}
+//             onRowsPerPageChange={(e) => {
+//               setRowsPerPage(+e.target.value);
+//               setPage(0);
+//             }}
+//           />
+//         </TableContainer>
+
+//         <Dialog open={open} onClose={handleClose}>
+//           <DialogTitle>{editing ? "Edit Student" : "Add Student"}</DialogTitle>
+//           <DialogContent>
+//             <TextField label="Name" fullWidth margin="dense"
+//               value={form.name}
+//               onChange={(e) => setForm({ ...form, name: e.target.value })}
+//             />
+//             <TextField label="Class" fullWidth margin="dense"
+//               value={form.className}
+//               onChange={(e) => setForm({ ...form, className: e.target.value })}
+//             />
+//             <TextField label="Seat Number" type="number" fullWidth margin="dense"
+//               value={form.seatNumber}
+//               onChange={(e) => setForm({ ...form, seatNumber: e.target.value })}
+//             />
+//           </DialogContent>
+//           <DialogActions>
+//             <Button onClick={handleClose}>Cancel</Button>
+//             <Button variant="contained" onClick={handleSubmit}>
+//               {editing ? "Update" : "Add"}
+//             </Button>
+//           </DialogActions>
+//         </Dialog>
+//       </Box>
+//     </Box>
+//   );
+// }
+
+
+
+
+
+
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -365,26 +637,23 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
   Avatar,
   Chip,
   InputAdornment,
   TablePagination,
+  MenuItem,
 } from "@mui/material";
+
 import {
   Add,
   Edit,
   Delete,
   Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
   School as SchoolIcon,
-  AccountBalance as AccountBalanceIcon,
-  Assessment as AssessmentIcon,
-  ExitToApp as ExitToAppIcon,
   Person as PersonIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
+
 import { Link } from "react-router-dom";
 
 export default function StudentList() {
@@ -392,11 +661,12 @@ export default function StudentList() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  // ✅ MATCH BACKEND SCHEMA
+  // ✅ UPDATED FORM (WITH GENDER)
   const [form, setForm] = useState({
     name: "",
     className: "",
     seatNumber: "",
+    gender: "",
   });
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -411,9 +681,10 @@ export default function StudentList() {
   /* ================= FETCH ================= */
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("https://school-backend-6udp.onrender.com/api/students");
+      const res = await axios.get(
+        "https://school-backend-6udp.onrender.com/api/students"
+      );
 
-      // ✅ Backend returns ARRAY
       setStudents(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Fetch students failed:", err);
@@ -421,18 +692,26 @@ export default function StudentList() {
     }
   };
 
-  /* ================= OPEN DIALOG ================= */
+  /* ================= OPEN ================= */
   const handleOpen = (student = null) => {
     setEditing(student);
+
     setForm(
       student
         ? {
             name: student.name,
             className: student.className,
             seatNumber: student.seatNumber,
+            gender: student.gender || "",
           }
-        : { name: "", className: "", seatNumber: "" }
+        : {
+            name: "",
+            className: "",
+            seatNumber: "",
+            gender: "",
+          }
     );
+
     setOpen(true);
   };
 
@@ -444,16 +723,29 @@ export default function StudentList() {
   /* ================= SAVE ================= */
   const handleSubmit = async () => {
     try {
+      // ✅ VALIDATION
+      if (!form.name || !form.className || !form.seatNumber || !form.gender) {
+        alert("All fields are required");
+        return;
+      }
+
       const payload = {
         name: form.name,
         className: form.className,
-        seatNumber: Number(form.seatNumber), // ✅ MUST BE NUMBER
+        seatNumber: Number(form.seatNumber),
+        gender: form.gender,
       };
 
       if (editing) {
-        await axios.put(`https://school-backend-6udp.onrender.com/api/students/${editing._id}`, payload);
+        await axios.put(
+          `https://school-backend-6udp.onrender.com/api/students/${editing._id}`,
+          payload
+        );
       } else {
-        await axios.post("https://school-backend-6udp.onrender.com/api/students", payload);
+        await axios.post(
+          "https://school-backend-6udp.onrender.com/api/students",
+          payload
+        );
       }
 
       fetchStudents();
@@ -467,7 +759,9 @@ export default function StudentList() {
   /* ================= DELETE ================= */
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://school-backend-6udp.onrender.com/api/students/${id}`);
+      await axios.delete(
+        `https://school-backend-6udp.onrender.com/api/students/${id}`
+      );
       fetchStudents();
     } catch (err) {
       console.error("Delete failed:", err);
@@ -479,7 +773,8 @@ export default function StudentList() {
     (s) =>
       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(s.seatNumber).includes(searchTerm)
+      String(s.seatNumber).includes(searchTerm) ||
+      s.gender?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const paginatedStudents = filteredStudents.slice(
@@ -487,9 +782,9 @@ export default function StudentList() {
     page * rowsPerPage + rowsPerPage
   );
 
-  /* ================= UI ================= */
   return (
     <Box sx={{ display: "flex" }}>
+      {/* HEADER */}
       <AppBar position="fixed">
         <Toolbar>
           <IconButton color="inherit" onClick={() => setDrawerOpen(true)}>
@@ -497,31 +792,40 @@ export default function StudentList() {
           </IconButton>
           <Typography sx={{ flexGrow: 1 }}>School ERP System</Typography>
           <Chip
-            avatar={<Avatar><PersonIcon /></Avatar>}
+            avatar={
+              <Avatar>
+                <PersonIcon />
+              </Avatar>
+            }
             label="Admin"
             sx={{ color: "white" }}
           />
         </Toolbar>
       </AppBar>
 
+      {/* DRAWER */}
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <Toolbar />
         <List>
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/students">
-              <ListItemIcon><SchoolIcon /></ListItemIcon>
+              <ListItemIcon>
+                <SchoolIcon />
+              </ListItemIcon>
               <ListItemText primary="Students" />
             </ListItemButton>
           </ListItem>
         </List>
       </Drawer>
 
+      {/* MAIN */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
 
+        {/* SEARCH + ADD */}
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
           <TextField
-            placeholder="Search..."
+            placeholder="Search students..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             InputProps={{
@@ -532,11 +836,13 @@ export default function StudentList() {
               ),
             }}
           />
+
           <Fab color="primary" onClick={() => handleOpen()}>
             <Add />
           </Fab>
         </Box>
 
+        {/* TABLE */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -544,9 +850,11 @@ export default function StudentList() {
                 <TableCell>Name</TableCell>
                 <TableCell>Class</TableCell>
                 <TableCell>Seat No</TableCell>
+                <TableCell>Gender</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {paginatedStudents.map((s) => (
                 <TableRow key={s._id}>
@@ -554,8 +862,20 @@ export default function StudentList() {
                   <TableCell>{s.className}</TableCell>
                   <TableCell>{s.seatNumber}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleOpen(s)}><Edit /></IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(s._id)}><Delete /></IconButton>
+                    <Chip label={s.gender} color="secondary" size="small" />
+                  </TableCell>
+
+                  <TableCell>
+                    <IconButton onClick={() => handleOpen(s)}>
+                      <Edit />
+                    </IconButton>
+
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDelete(s._id)}
+                    >
+                      <Delete />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -575,24 +895,65 @@ export default function StudentList() {
           />
         </TableContainer>
 
+        {/* DIALOG */}
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>{editing ? "Edit Student" : "Add Student"}</DialogTitle>
+          <DialogTitle>
+            {editing ? "Edit Student" : "Add Student"}
+          </DialogTitle>
+
           <DialogContent>
-            <TextField label="Name" fullWidth margin="dense"
+            <TextField
+              label="Name"
+              fullWidth
+              margin="dense"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
             />
-            <TextField label="Class" fullWidth margin="dense"
+
+            <TextField
+              label="Class"
+              fullWidth
+              margin="dense"
               value={form.className}
-              onChange={(e) => setForm({ ...form, className: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, className: e.target.value })
+              }
             />
-            <TextField label="Seat Number" type="number" fullWidth margin="dense"
+
+            <TextField
+              label="Seat Number"
+              type="number"
+              fullWidth
+              margin="dense"
               value={form.seatNumber}
-              onChange={(e) => setForm({ ...form, seatNumber: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, seatNumber: e.target.value })
+              }
             />
+
+            {/* ✅ GENDER FIELD */}
+            <TextField
+              select
+              label="Gender"
+              fullWidth
+              margin="dense"
+              value={form.gender}
+              onChange={(e) =>
+                setForm({ ...form, gender: e.target.value })
+              }
+            >
+              <MenuItem value="">Select Gender</MenuItem>
+              <MenuItem value="boy">Boy</MenuItem>
+              <MenuItem value="girl">Girl</MenuItem>
+              {/* <MenuItem value="other">Other</MenuItem> */}
+            </TextField>
           </DialogContent>
+
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
+
             <Button variant="contained" onClick={handleSubmit}>
               {editing ? "Update" : "Add"}
             </Button>
