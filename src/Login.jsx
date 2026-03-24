@@ -944,7 +944,7 @@ export default function Login() {
       if (res.data.user.role === "parent") {
         navigate("/parent");
       } else if (res.data.user.role === "student") {
-        navigate("/student");
+        navigate("/students");
       } else {
         navigate("/dashboard");
       }
