@@ -342,7 +342,7 @@ export default function Dashboard() {
     { text: "Students", icon: <SchoolIcon />, path: "/students" },
     { text: "Staff", icon: <PeopleIcon />, path: "/staff" },
     { text: "Attendance", icon: <AssessmentIcon />, path: "/attendance" },
-    { text: "Payments", icon: <AccountBalanceIcon />, path: "/payments" },
+    { text: "Admission Management", icon: <AccountBalanceIcon />, path: "/admission-management" },
   ];
 
   // Prepare recent admissions (most recent 4 based on admissionDate)
@@ -394,7 +394,7 @@ export default function Dashboard() {
       icon: <AccountBalanceIcon sx={{ fontSize: 40 }} />,
       color: theme.palette.warning.main,
       bgColor: alpha(theme.palette.warning.main, 0.1),
-      link: "/payments",
+      link: "/admission-management",
     },
   ];
 

@@ -674,6 +674,7 @@ import MTechnology from "./pages/master/MTechnology.jsx";
 import BTechnology from "./pages/technology/BTechnology.jsx";
 import PGDiploma from "./pages/pgdiploma/PGDiploma.jsx";
 import ITICourses from "./pages/iti/ITICourses.jsx";
+import AdmissionManagement from "./pages/AdmissionManagement.jsx";
 // import Certificates from "./pages/certificates/Certificates.jsx";
 
 /* PARENT PORTAL */
@@ -746,7 +747,7 @@ function App() {
       <Route path="/attendance" element={<AdminRoute><AttendanceHome /></AdminRoute>} />
       <Route path="/attendance/students" element={<AdminRoute><StudentAttendance /></AdminRoute>} />
       <Route path="/attendance/staff" element={<AdminRoute><StaffAttendance /></AdminRoute>} />
-
+      <Route path="/admission-management" element={<AdmissionManagement />} />
       {/* PARENT PORTAL */}
       <Route
         path="/parent"
