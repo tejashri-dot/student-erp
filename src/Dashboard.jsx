@@ -917,9 +917,7 @@ export default function Dashboard() {
             <Typography variant="h6" fontWeight={600}>
               Admin Portal
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              School Management System
-            </Typography>
+          
           </Box>
           <Divider sx={{ my: 2 }} />
           <List>

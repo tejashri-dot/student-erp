@@ -2202,7 +2202,7 @@ export default function StudentAttendance() {
   const token = localStorage.getItem("token");
 
   const api = axios.create({
-    baseURL: "http://localhost:8080/api/attendance",
+    baseURL: " https://school-backend-6udp.onrender.com/api/attendance",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": "application/json",

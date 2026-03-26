@@ -125,7 +125,7 @@ export default function Layout({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          {/* <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             {user?.role === "company_admin"
               ? "Company Admin"
               : user?.role === "branch_admin"
@@ -137,7 +137,7 @@ export default function Layout({ children }) {
                     : user?.role === "student"
                       ? "Student"
                       : "Dashboard"}
-          </Typography>
+          </Typography> */}
           <Typography variant="body1" sx={{ mr: 2 }}>
             {user?.name}
           </Typography>
